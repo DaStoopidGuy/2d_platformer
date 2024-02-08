@@ -6,7 +6,7 @@ LDFLAGS = -Llib -lraylib -lopengl32 -lgdi32 -lwinmm
 INC_FLAGS = -Iinclude
 CFLAGS = $(INC_FLAGS) -std=c99
 
-$(TARGET_EXEC): main.o
+$(TARGET_EXEC): main.o player.o tile.o
 	$(CC) $^ -o $(TARGET_EXEC) $(LDFLAGS)
 
 %.o: $(SRC_DIRS)/%.c
