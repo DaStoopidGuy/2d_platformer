@@ -1,7 +1,9 @@
 #include "common.h"
 #include "player.h"
+#include "tile.h"
+#include "raymath.h"
 
-void UpdatePlayer(Player *player, float deltaTime)
+void UpdatePlayer(Player *player, float deltaTime, int tilemap[][25], int rows, int cols)
 {
     // Horizontal movement
     int player_x_direction = ((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) - (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)));
@@ -14,6 +16,7 @@ void UpdatePlayer(Player *player, float deltaTime)
         player->can_jump = false;
     }
 
+    // remove later
     if (player->pos.y > 400)
     {
         player->vel.y = 0;
