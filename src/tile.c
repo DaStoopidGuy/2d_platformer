@@ -76,7 +76,7 @@ void DebugHighlightNeighbouringTiles(Vector2 *ref, int tilemap[19][25])
     // get player tile coords
     int tile_coord_y = (int)((ref->y / TILE_HEIGHT) + 0.5f);
     int tile_coord_x = (int)((ref->x / TILE_WIDTH) + 0.5f);
-    printf("%d, %d\n", tile_coord_x, tile_coord_y);
+    // printf("%d, %d\n", tile_coord_x, tile_coord_y);
     for (int i = 0; i < NEIGHBOUR_OFFSETS_LEN; i++)
     {
         int check_tile_x = tile_coord_x + NEIGHBOUR_OFFSETS[i][0];
@@ -85,7 +85,7 @@ void DebugHighlightNeighbouringTiles(Vector2 *ref, int tilemap[19][25])
         // check tilemap if tile is solid
         if (tilemap[check_tile_y][check_tile_x] != 0)
         {
-            printf("Solid block: %d %d\n", check_tile_x, check_tile_y);
+            // printf("Solid block: %d %d\n", check_tile_x, check_tile_y);
             DebugHighlighTile(check_tile_x, check_tile_y);
         }
     }

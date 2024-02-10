@@ -8,6 +8,6 @@ typedef struct
     Texture2D texture;
 } Player;
 
-void UpdatePlayer(Player *player, float deltaTime, int tilemap[][25], int rows, int cols);
+void UpdatePlayer(Player *player, float deltaTime, int tilemap[][25], int rows, int cols, bool godmode);
 void DrawPlayer(Player *player);
 void DrawPlayerCoords(Player *player);

@@ -9,6 +9,9 @@ int main(void)
     InitWindow(WIN_WIDTH, WIN_HEIGHT, "2d Platformer");
     SetTargetFPS(60);
 
+    // Settings?
+    bool god_mode = false;
+
     // player
     Player player = {0};
     player.pos = (Vector2){400, 300};
@@ -54,8 +57,11 @@ int main(void)
     {
         float deltaTime = GetFrameTime();
 
+        if (IsKeyPressed(KEY_G))
+            god_mode = !god_mode;
+
         // UPDATE STUFF
-        UpdatePlayer(&player, deltaTime, tilemap, rows, cols);
+        UpdatePlayer(&player, deltaTime, tilemap, rows, cols, god_mode);
 
         // RENDER STUFF
         BeginDrawing();
@@ -68,6 +74,8 @@ int main(void)
         // debug
         DrawFPS(WIN_WIDTH - 100, 30);
         DrawPlayerCoords(&player);
+        if (god_mode)
+            DrawText("GODMODE", WIN_WIDTH / 2, 10, 15, RED);
 
         // player
         DrawPlayer(&player);
