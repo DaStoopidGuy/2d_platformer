@@ -3,6 +3,15 @@
 #include "tile.h"
 #include "raymath.h"
 
+Player NewPlayer(Vector2 pos, const char *texture_file_name)
+{
+    Player player = {0};
+    player.pos = pos;
+    player.is_on_ground = true;
+    player.texture = LoadTexture(texture_file_name);
+    return player;
+}
+
 void UpdatePlayer(Player *player, float deltaTime, int tilemap[][25], int rows, int cols, bool godmode)
 {
     // Horizontal movement
@@ -17,10 +26,10 @@ void UpdatePlayer(Player *player, float deltaTime, int tilemap[][25], int rows, 
     else
     {
         // Vertical movement
-        if ((IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) && player->can_jump)
+        if ((IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) && player->is_on_ground)
         {
             player->vel.y = -PLAYER_JUMP;
-            player->can_jump = false;
+            player->is_on_ground = false;
         }
 
         // remove later
@@ -28,7 +37,7 @@ void UpdatePlayer(Player *player, float deltaTime, int tilemap[][25], int rows, 
         {
             player->vel.y = 0;
             player->pos.y = 400;
-            player->can_jump = true;
+            player->is_on_ground = true;
         }
         else if (player->pos.y < 400)
             player->vel.y += GRAVITY * deltaTime;

@@ -13,10 +13,11 @@ int main(void)
     bool god_mode = false;
 
     // player
-    Player player = {0};
-    player.pos = (Vector2){400, 300};
-    player.can_jump = true;
-    player.texture = LoadTexture("resources/player.png");
+    // Player player = {0};
+    // player.pos = (Vector2){400, 300};
+    // player.is_on_ground = true;
+    // player.texture = LoadTexture("resources/player.png");
+    Player player = NewPlayer((Vector2){400, 300}, "resources/player.png");
 
     // tilemap
     Tile tiles[] = {
