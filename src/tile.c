@@ -30,12 +30,12 @@ void DrawTilemap(int tilemap[][25], Tile tiles[], int rows, int cols)
 
             case 1:
             {
-                DrawTile(tiles[1], x * TILE_WIDTH, y * TILE_HEIGHT);
+                DrawTile(tiles[1], x * TILE_SIZE, y * TILE_SIZE);
                 break;
             }
             case 2:
             {
-                DrawTile(tiles[0], x * TILE_WIDTH, y * TILE_HEIGHT);
+                DrawTile(tiles[0], x * TILE_SIZE, y * TILE_SIZE);
                 break;
             }
 
@@ -64,18 +64,18 @@ void DebugHighlighTile(int tile_x, int tile_y)
 {
 
     DrawRectangleLines(
-        tile_x * TILE_WIDTH,
-        tile_y * TILE_HEIGHT,
-        TILE_WIDTH,
-        TILE_HEIGHT,
+        tile_x * TILE_SIZE,
+        tile_y * TILE_SIZE,
+        TILE_SIZE,
+        TILE_SIZE,
         RED);
 }
 
 void DebugHighlightNeighbouringTiles(Vector2 *ref, int tilemap[19][25])
 {
     // get player tile coords
-    int tile_coord_y = (int)((ref->y / TILE_HEIGHT) + 0.5f);
-    int tile_coord_x = (int)((ref->x / TILE_WIDTH) + 0.5f);
+    int tile_coord_y = (int)((ref->y / TILE_SIZE) + 0.5f);
+    int tile_coord_x = (int)((ref->x / TILE_SIZE) + 0.5f);
     // printf("%d, %d\n", tile_coord_x, tile_coord_y);
     for (int i = 0; i < NEIGHBOUR_OFFSETS_LEN; i++)
     {

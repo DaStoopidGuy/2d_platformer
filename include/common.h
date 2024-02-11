@@ -11,5 +11,6 @@
 #define PLAYER_H_SPD 200
 #define PLAYER_JUMP 4
 
-#define TILE_WIDTH 32
-#define TILE_HEIGHT 32
+// #define TILE_WIDTH 32
+// #define TILE_HEIGHT 32
+#define TILE_SIZE 32
