@@ -60,7 +60,7 @@ int main(void)
         ClearBackground(DARKGRAY); // clear the screen
 
         DrawTilemap(tilemap, tiles);
-        DebugHighlightNeighbouringTiles(&player.pos, tilemap);
+        DebugHighlightNeighbouringTiles(player.pos, tilemap);
 
         DrawText("Congrats! You created your first game!", 190, 200, 20, WHITE);
         // debug
