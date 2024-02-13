@@ -13,6 +13,7 @@ Player NewPlayer(Vector2 pos, const char *texture_file_name)
     return player;
 }
 
+// TODO: build collision system again.
 void CollidePlayerWithTile(Player *player, Rectangle tile_rec)
 {
     if (CheckCollisionRecs(player->rec, tile_rec))
@@ -67,11 +68,12 @@ void UpdatePlayer(Player *player, float deltaTime, int tilemap[][25], int rows, 
         if (!player->is_on_ground)
             player->vel.y += GRAVITY * deltaTime;
 
+        // TODO: build tile collision system again.
         for (int y = 0; y < rows; y++)
         {
             for (int x = 0; x < cols; x++)
             {
-                if (tilemap[y][x] != 0) // Check for non-empty tiles
+                if (tilemap[y][x] != TILE_EMPTY) // Check for non-empty tiles
                     CollidePlayerWithTile(player, (Rectangle){x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE});
             }
         }

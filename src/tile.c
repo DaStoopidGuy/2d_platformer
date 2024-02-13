@@ -1,5 +1,6 @@
 #include "common.h"
 #include "tile.h"
+#include <string.h>
 
 Tile NewTile(const char *filename)
 {
@@ -25,17 +26,17 @@ void DrawTilemap(int tilemap[][25], Tile tiles[], int rows, int cols)
         {
             switch (tilemap[y][x])
             {
-            case 0:
+            case -1: // air
                 break;
 
+            case 0:
+            {
+                DrawTile(tiles[0], x * TILE_SIZE, y * TILE_SIZE);
+                break;
+            }
             case 1:
             {
                 DrawTile(tiles[1], x * TILE_SIZE, y * TILE_SIZE);
-                break;
-            }
-            case 2:
-            {
-                DrawTile(tiles[0], x * TILE_SIZE, y * TILE_SIZE);
                 break;
             }
 
@@ -71,7 +72,7 @@ void DebugHighlighTile(int tile_x, int tile_y)
         RED);
 }
 
-void DebugHighlightNeighbouringTiles(Vector2 *ref, int tilemap[19][25])
+void DebugHighlightNeighbouringTiles(Vector2 *ref, int tilemap[][25])
 {
     // get player tile coords
     int tile_coord_y = (int)((ref->y / TILE_SIZE) + 0.5f);
@@ -89,4 +90,39 @@ void DebugHighlightNeighbouringTiles(Vector2 *ref, int tilemap[19][25])
             DebugHighlighTile(check_tile_x, check_tile_y);
         }
     }
+}
+
+// TODO: check for tilemap max rows and columns in the loops
+void ImportTilemap(const char *filename, int tilemap[][25])
+{
+    char buffer[1024];
+    char *token;
+
+    FILE *file = fopen(filename, "r");
+    if (file == NULL)
+        printf("Map file could not be opened");
+
+    // read file content line by line
+    int y = 0;
+    while (fgets(buffer, sizeof(buffer), file))
+    {
+        // replace the trailing newline character with 0 (aka remove it)
+        // buffer[strcspn(buffer, "\n")] = 0;
+        token = strtok(buffer, ",");
+
+        int x = 0;
+        while (token != NULL)
+        {
+
+            // set the tilemap cell accordingly
+            tilemap[y][x] = atoi(token);
+            printf("%s %d %d\n", token, x, y);
+            token = strtok(NULL, ",");
+            x++;
+        }
+        y++;
+    }
+
+    // close the file after use
+    fclose(file);
 }
