@@ -1,4 +1,3 @@
-#include "common.h"
 #include "tile.h"
 #include <string.h>
 
@@ -17,12 +16,12 @@ void DrawTile(Tile tile, int x, int y)
     DrawTexture(tile.texture, x, y, WHITE);
 }
 
-void DrawTilemap(int tilemap[][25], Tile tiles[], int rows, int cols)
+void DrawTilemap(int tilemap[][MAP_WIDTH], Tile tiles[])
 {
     // tilemap
-    for (int y = 0; y < rows; y++)
+    for (int y = 0; y < MAP_HEIGHT; y++)
     {
-        for (int x = 0; x < cols; x++)
+        for (int x = 0; x < MAP_WIDTH; x++)
         {
             switch (tilemap[y][x])
             {
@@ -72,28 +71,27 @@ void DebugHighlighTile(int tile_x, int tile_y)
         RED);
 }
 
-void DebugHighlightNeighbouringTiles(Vector2 *ref, int tilemap[][25])
+void DebugHighlightNeighbouringTiles(Vector2 *ref, int tilemap[][MAP_WIDTH])
 {
     // get player tile coords
     int tile_coord_y = (int)((ref->y / TILE_SIZE) + 0.5f);
     int tile_coord_x = (int)((ref->x / TILE_SIZE) + 0.5f);
-    // printf("%d, %d\n", tile_coord_x, tile_coord_y);
+
     for (int i = 0; i < NEIGHBOUR_OFFSETS_LEN; i++)
     {
         int check_tile_x = tile_coord_x + NEIGHBOUR_OFFSETS[i][0];
         int check_tile_y = tile_coord_y + NEIGHBOUR_OFFSETS[i][1];
 
         // check tilemap if tile is solid
-        if (tilemap[check_tile_y][check_tile_x] != 0)
+        if (tilemap[check_tile_y][check_tile_x] != TILE_EMPTY)
         {
-            // printf("Solid block: %d %d\n", check_tile_x, check_tile_y);
             DebugHighlighTile(check_tile_x, check_tile_y);
         }
     }
 }
 
 // TODO: check for tilemap max rows and columns in the loops
-void ImportTilemap(const char *filename, int tilemap[][25])
+void ImportTilemap(const char *filename, int tilemap[][MAP_WIDTH])
 {
     char buffer[1024];
     char *token;
@@ -116,7 +114,6 @@ void ImportTilemap(const char *filename, int tilemap[][25])
 
             // set the tilemap cell accordingly
             tilemap[y][x] = atoi(token);
-            printf("%s %d %d\n", token, x, y);
             token = strtok(NULL, ",");
             x++;
         }

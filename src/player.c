@@ -1,4 +1,3 @@
-#include "common.h"
 #include "player.h"
 #include "tile.h"
 #include "raymath.h"
@@ -43,11 +42,13 @@ void CollidePlayerWithTile(Player *player, Rectangle tile_rec)
         }
     }
 }
-void UpdatePlayer(Player *player, float deltaTime, int tilemap[][25], int rows, int cols, bool godmode)
+
+void UpdatePlayer(Player *player, float deltaTime, int tilemap[][MAP_WIDTH], bool godmode)
 {
-    // Horizontal movement
     bool right_key = IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D);
     bool left_key = IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A);
+    bool space_key = IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_W);
+    // Horizontal movement
     int player_x_direction = (right_key - left_key);
     player->vel.x = PLAYER_H_SPD * player_x_direction * deltaTime;
 
@@ -59,7 +60,7 @@ void UpdatePlayer(Player *player, float deltaTime, int tilemap[][25], int rows, 
     else
     {
         // Vertical movement
-        if ((IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) && player->is_on_ground)
+        if (space_key && player->is_on_ground)
         {
             player->vel.y = -PLAYER_JUMP;
             player->is_on_ground = false;
@@ -69,9 +70,9 @@ void UpdatePlayer(Player *player, float deltaTime, int tilemap[][25], int rows, 
             player->vel.y += GRAVITY * deltaTime;
 
         // TODO: build tile collision system again.
-        for (int y = 0; y < rows; y++)
+        for (int y = 0; y < MAP_HEIGHT; y++)
         {
-            for (int x = 0; x < cols; x++)
+            for (int x = 0; x < MAP_WIDTH; x++)
             {
                 if (tilemap[y][x] != TILE_EMPTY) // Check for non-empty tiles
                     CollidePlayerWithTile(player, (Rectangle){x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE});

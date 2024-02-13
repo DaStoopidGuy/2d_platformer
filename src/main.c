@@ -45,9 +45,6 @@ int main(void)
     int tilemap[19][25];
     ImportTilemap("resources/map.csv", tilemap);
 
-    int rows = sizeof tilemap / sizeof tilemap[0];
-    int cols = sizeof tilemap[0] / sizeof tilemap[0][0];
-
     while (!WindowShouldClose())
     {
         float deltaTime = GetFrameTime();
@@ -56,13 +53,13 @@ int main(void)
             god_mode = !god_mode;
 
         // UPDATE STUFF
-        UpdatePlayer(&player, deltaTime, tilemap, rows, cols, god_mode);
+        UpdatePlayer(&player, deltaTime, tilemap, god_mode);
 
         // RENDER STUFF
         BeginDrawing();
         ClearBackground(DARKGRAY); // clear the screen
 
-        DrawTilemap(tilemap, tiles, rows, cols);
+        DrawTilemap(tilemap, tiles);
         DebugHighlightNeighbouringTiles(&player.pos, tilemap);
 
         DrawText("Congrats! You created your first game!", 190, 200, 20, WHITE);

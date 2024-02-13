@@ -1,4 +1,5 @@
 #pragma once
+#include "common.h"
 
 typedef struct
 {
@@ -10,6 +11,6 @@ typedef struct
 } Player;
 
 Player NewPlayer(Vector2 pos, const char *texture_file_name);
-void UpdatePlayer(Player *player, float deltaTime, int tilemap[][25], int rows, int cols, bool godmode);
+void UpdatePlayer(Player *player, float deltaTime, int tilemap[][MAP_WIDTH], bool godmode);
 void DrawPlayer(Player *player);
 void DrawPlayerCoords(Player *player);
