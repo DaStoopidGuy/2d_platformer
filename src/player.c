@@ -78,10 +78,9 @@ void UpdatePlayer(Player *player, float deltaTime, int tilemap[][MAP_WIDTH], boo
         int player_y_direction = ((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) - (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)));
         player->vel.y = PLAYER_H_SPD * player_y_direction * deltaTime;
 
-        // TODO: UNYOINK! UPDATE: DIDNOT NEED TO YOINK IN THE FIRST PLACE
         // update player position
-        player->pos.x += player->vel.x * deltaTime;
-        player->pos.y += player->vel.y * deltaTime;
+        player->pos.x += player->vel.x;
+        player->pos.y += player->vel.y;
     }
     else
     {
