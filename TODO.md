@@ -1,3 +1,3 @@
 # TODO
 
-- rework the player collision system only using the Tiles around the Player->pos
+- understand why i need to update the player position before checking for collisions

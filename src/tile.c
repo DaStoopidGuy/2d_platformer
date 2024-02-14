@@ -61,7 +61,7 @@ const int NEIGHBOUR_OFFSETS[][2] = {
 };
 const int NEIGHBOUR_OFFSETS_LEN = sizeof(NEIGHBOUR_OFFSETS) / sizeof(NEIGHBOUR_OFFSETS[0]);
 
-void GetTilesAround(Vector2 *tiles_around, Vector2 pos)
+void GetTilesAround(int tiles_around[9][2], Vector2 pos)
 {
     // get player tile position
     int tile_pos_y = (pos.y / TILE_SIZE) + 0.5f;
@@ -72,7 +72,8 @@ void GetTilesAround(Vector2 *tiles_around, Vector2 pos)
         int check_tile_x = tile_pos_x + NEIGHBOUR_OFFSETS[i][0];
         int check_tile_y = tile_pos_y + NEIGHBOUR_OFFSETS[i][1];
 
-        tiles_around[i] = (Vector2){check_tile_x, check_tile_y};
+        tiles_around[i][0] = check_tile_x;
+        tiles_around[i][1] = check_tile_y;
     }
 }
 

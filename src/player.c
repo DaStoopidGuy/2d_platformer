@@ -12,34 +12,55 @@ Player NewPlayer(Vector2 pos, const char *texture_file_name)
     return player;
 }
 
-// TODO: build collision system again.
-void CollidePlayerWithTile(Player *player, Rectangle tile_rec)
+void CollidePlayerWithTileRec(Player *player, Rectangle tile_rec)
 {
-    if (CheckCollisionRecs(player->rec, tile_rec))
-    { // Collision with tile detected, stop vertical movement
-        if (player->vel.y > 0 && player->pos.y + player->rec.height - player->vel.y <= tile_rec.y)
+    if (CheckCollisionRecs(player->rec, tile_rec)) // Collision with tile detected
+    {
+        if ((player->vel.y > 0) && (player->pos.y + player->rec.height - player->vel.y <= tile_rec.y))
         {
             // Player is falling and collides with the top of the platform
             player->pos.y = tile_rec.y - player->rec.height;
             player->vel.y = 0;
             player->is_on_ground = true;
         }
-        else if (player->vel.y < 0 && player->pos.y - player->vel.y >= tile_rec.y + tile_rec.height)
+        else if ((player->vel.y < 0) && (player->pos.y - player->vel.y >= tile_rec.y + tile_rec.height))
         {
             // Player is jumping and collides with the bottom of the platform
             player->pos.y = tile_rec.y + tile_rec.height;
             player->vel.y = 0;
         }
-        else if (player->vel.x > 0 && player->pos.x + player->rec.width - player->vel.x <= tile_rec.x)
+        else if ((player->vel.x > 0) && (player->pos.x + player->rec.width - player->vel.x <= tile_rec.x))
         {
             // Player is moving right and collides with the left side of the platform
             player->pos.x = tile_rec.x - player->rec.width;
         }
-        else if (player->vel.x < 0 && player->pos.x - player->vel.x >= tile_rec.x + tile_rec.width)
+        else if ((player->vel.x < 0) && (player->pos.x - player->vel.x >= tile_rec.x + tile_rec.width))
         {
             // Player is moving left and collides with the right side of the platform
             player->pos.x = tile_rec.x + tile_rec.width;
         }
+    }
+}
+
+void CollidePlayerWithTilemap(Player *player, int tilemap[][MAP_WIDTH])
+{
+    int tiles_around[9][2];
+    GetTilesAround(tiles_around, player->pos);
+
+    for (int i = 0; i < 9; i++)
+    {
+        int x = tiles_around[i][0];
+        int y = tiles_around[i][1];
+
+        // get the rectangle for the tile
+        Rectangle tile_rect = (Rectangle){
+            x * TILE_SIZE,
+            y * TILE_SIZE,
+            TILE_SIZE,
+            TILE_SIZE,
+        };
+        if (tilemap[y][x] != TILE_EMPTY)
+            CollidePlayerWithTileRec(player, tile_rect);
     }
 }
 
@@ -56,6 +77,11 @@ void UpdatePlayer(Player *player, float deltaTime, int tilemap[][MAP_WIDTH], boo
     {
         int player_y_direction = ((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) - (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)));
         player->vel.y = PLAYER_H_SPD * player_y_direction * deltaTime;
+
+        // TODO: UNYOINK! UPDATE: DIDNOT NEED TO YOINK IN THE FIRST PLACE
+        // update player position
+        player->pos.x += player->vel.x * deltaTime;
+        player->pos.y += player->vel.y * deltaTime;
     }
     else
     {
@@ -65,27 +91,23 @@ void UpdatePlayer(Player *player, float deltaTime, int tilemap[][MAP_WIDTH], boo
             player->vel.y = -PLAYER_JUMP;
             player->is_on_ground = false;
         }
-
+        // gravity
         if (!player->is_on_ground)
             player->vel.y += GRAVITY * deltaTime;
 
-        // TODO: build tile collision system again.
-        for (int y = 0; y < MAP_HEIGHT; y++)
-        {
-            for (int x = 0; x < MAP_WIDTH; x++)
-            {
-                if (tilemap[y][x] != TILE_EMPTY) // Check for non-empty tiles
-                    CollidePlayerWithTile(player, (Rectangle){x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE});
-            }
-        }
-    }
+        // update player position
+        player->pos.x += player->vel.x;
+        player->pos.y += player->vel.y;
+        // update the player collider rectangle
+        player->rec.x = player->pos.x;
+        player->rec.y = player->pos.y;
 
-    // update player position
-    player->pos.x += player->vel.x;
-    player->pos.y += player->vel.y;
-    // update the player collider rectangle
-    player->rec.x = player->pos.x;
-    player->rec.y = player->pos.y;
+        // reset ground flag YOU FUCKING NIGGER!
+        player->is_on_ground = false;
+
+        // Check collisions on all sides
+        CollidePlayerWithTilemap(player, tilemap);
+    }
 }
 void DrawPlayer(Player *player)
 {
