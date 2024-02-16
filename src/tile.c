@@ -47,33 +47,21 @@ void DrawTilemap(int tilemap[][MAP_WIDTH], Tile tiles[])
     }
 }
 
-const int NEIGHBOUR_OFFSETS[][2] = {
-    {0, 0},
-    {-1, 0},
-    {0, -1},
-    {-1, -1},
-    {1, 0},
-    {0, 1},
-    {1, 1},
-    {-1, 1},
-    {1, -1},
-
-};
-const int NEIGHBOUR_OFFSETS_LEN = sizeof(NEIGHBOUR_OFFSETS) / sizeof(NEIGHBOUR_OFFSETS[0]);
-
 void GetTilesAround(int tiles_around[9][2], Vector2 pos)
 {
-    // get player tile position
     int tile_pos_y = (pos.y / TILE_SIZE) + 0.5f;
     int tile_pos_x = (pos.x / TILE_SIZE) + 0.5f;
 
-    for (int i = 0; i < NEIGHBOUR_OFFSETS_LEN; i++)
+    for (int i = -1, k = 0; i <= 1; i++)
     {
-        int check_tile_x = tile_pos_x + NEIGHBOUR_OFFSETS[i][0];
-        int check_tile_y = tile_pos_y + NEIGHBOUR_OFFSETS[i][1];
+        for (int j = -1; j <= 1; j++, k++)
+        {
+            int check_tile_x = tile_pos_x + i;
+            int check_tile_y = tile_pos_y + j;
 
-        tiles_around[i][0] = check_tile_x;
-        tiles_around[i][1] = check_tile_y;
+            tiles_around[k][0] = check_tile_x;
+            tiles_around[k][1] = check_tile_y;
+        }
     }
 }
 
