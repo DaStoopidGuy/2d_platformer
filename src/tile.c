@@ -79,7 +79,6 @@ void GetTilesAround(int tiles_around[9][2], Vector2 pos)
 
 void DebugHighlighTile(int tile_x, int tile_y)
 {
-
     DrawRectangleLines(
         tile_x * TILE_SIZE,
         tile_y * TILE_SIZE,
@@ -90,20 +89,15 @@ void DebugHighlighTile(int tile_x, int tile_y)
 
 void DebugHighlightNeighbouringTiles(Vector2 pos, int tilemap[][MAP_WIDTH])
 {
-    // get player tile coords
-    int tile_pos_y = (int)((pos.y / TILE_SIZE) + 0.5f);
-    int tile_pos_x = (int)((pos.x / TILE_SIZE) + 0.5f);
+    int tiles_around[9][2];
+    GetTilesAround(tiles_around, pos);
 
-    for (int i = 0; i < NEIGHBOUR_OFFSETS_LEN; i++)
+    for (int i = 0; i < 9; i++)
     {
-        int check_tile_x = tile_pos_x + NEIGHBOUR_OFFSETS[i][0];
-        int check_tile_y = tile_pos_y + NEIGHBOUR_OFFSETS[i][1];
-
-        // check tilemap if tile is solid
-        if (tilemap[check_tile_y][check_tile_x] != TILE_EMPTY)
-        {
-            DebugHighlighTile(check_tile_x, check_tile_y);
-        }
+        int x = tiles_around[i][0];
+        int y = tiles_around[i][1];
+        if (tilemap[y][x] != TILE_EMPTY)
+            DebugHighlighTile(x, y);
     }
 }
 
