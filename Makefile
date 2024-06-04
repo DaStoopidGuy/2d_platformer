@@ -21,17 +21,20 @@ ifeq ($(detected_OS),Linux)
 	LDFLAGS := -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 endif
 
+# this is what runs when typing only "make"
+.PHONY: all
+all: clean run
+
 $(TARGET_EXEC): main.o player.o tile.o
 	$(CC) $^ -o $(TARGET_EXEC) $(LDFLAGS)
 
 %.o: $(SRC_DIRS)/%.c
 	$(CC) $(CFLAGS) -c $<
 
-.PHONY: clean run all
+.PHONY: clean run
+
 clean:
 	rm -f *.o $(TARGET_EXEC)
 
 run: $(TARGET_EXEC)
 	./$(TARGET_EXEC)
-
-all: clean run
