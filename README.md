@@ -7,9 +7,17 @@ I used the raylib game library to develop it in C.
 My goal with this particular project is the learn the basics of game architecture along with how things work in C language and working with makefiles.
 
 ## Quickstart
-Currently, the makefile is only written to build for windows (It will be updated later)
+Currently, the makefile is written to build for windows and linux. It detects the operating system automatically.
+> MacOS support is on the way..
+
 ### Windows
-Enter the following command in the Parent directory:
+Enter the following command in the project directory:
+```bash
+make run
+```
+
+### Linux
+Run the following in your terminal (inside project directory):
 ```bash
 make run
 ```
