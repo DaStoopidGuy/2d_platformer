@@ -1,7 +1,7 @@
 #pragma once
 #include <stdio.h>
 #include <stdlib.h>
-#include "raylib.h"
+#include "structs.h"
 
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 608

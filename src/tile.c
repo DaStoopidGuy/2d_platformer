@@ -1,5 +1,6 @@
 #include "tile.h"
 #include <string.h>
+#include "common.h"
 #include "raymath.h"
 
 Tile NewTile(const char *filename)
@@ -17,14 +18,14 @@ void DrawTile(Tile tile, int x, int y)
     DrawTexture(tile.texture, x, y, WHITE);
 }
 
-void DrawTilemap(int tilemap[][MAP_WIDTH], Tile tiles[])
+void DrawTilemap(int *tilemap, Tile tiles[])
 {
     // tilemap
     for (int y = 0; y < MAP_HEIGHT; y++)
     {
         for (int x = 0; x < MAP_WIDTH; x++)
         {
-            switch (tilemap[y][x])
+            switch (tilemap[y * MAP_WIDTH + x])
             {
             case -1: // air
                 break;
@@ -75,7 +76,7 @@ void DebugHighlighTile(int tile_x, int tile_y)
         RED);
 }
 
-void DebugHighlightNeighbouringTiles(Vector2 pos, int tilemap[][MAP_WIDTH])
+void DebugHighlightNeighbouringTiles(Vector2 pos, int *tilemap)
 {
     int tiles_around[9][2];
     GetTilesAround(tiles_around, pos);
@@ -84,13 +85,13 @@ void DebugHighlightNeighbouringTiles(Vector2 pos, int tilemap[][MAP_WIDTH])
     {
         int x = tiles_around[i][0];
         int y = tiles_around[i][1];
-        if (tilemap[y][x] != TILE_EMPTY)
+        if (tilemap[y * MAP_WIDTH + x] != TILE_EMPTY)
             DebugHighlighTile(x, y);
     }
 }
 
 // TODO: check for tilemap max rows and columns in the loops
-void ImportTilemap(const char *filename, int tilemap[][MAP_WIDTH])
+void ImportTilemap(const char *filename, int *tilemap)
 {
     char buffer[1024];
     char *token;
@@ -112,7 +113,7 @@ void ImportTilemap(const char *filename, int tilemap[][MAP_WIDTH])
         {
 
             // set the tilemap cell accordingly
-            tilemap[y][x] = atoi(token);
+            tilemap[y * MAP_WIDTH + x] = atoi(token);
             token = strtok(NULL, ",");
             x++;
         }

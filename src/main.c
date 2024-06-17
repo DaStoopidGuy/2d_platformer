@@ -1,60 +1,67 @@
 #include "common.h"
 #include "player.h"
-#include "raymath.h"
+#include "structs.h"
 #include "tile.h"
 #include <stdlib.h>
+
+void InitGameData(GameData *game);
+void FreeGameData(GameData *game);
 
 int main(void)
 {
     InitWindow(WIN_WIDTH, WIN_HEIGHT, "2d Platformer");
     SetTargetFPS(60);
 
-    // Settings?
-    bool god_mode = false;
-
-    // player
-    Player player = NewPlayer((Vector2){400, 300}, "resources/player.png");
-
-    // tilemap
-    Tile tiles[] = {
-        NewTile("resources/grass-tile.png"),
-        NewTile("resources/ground-tile.png"),
-    };
-
-    int tilemap[19][25];
-    ImportTilemap("resources/map.csv", tilemap);
-
+    GameData game;
+    InitGameData(&game);
+    
     while (!WindowShouldClose())
     {
         float deltaTime = GetFrameTime();
 
         if (IsKeyPressed(KEY_G))
-            god_mode = !god_mode;
+            game.god_mode = !game.god_mode;
 
         // UPDATE STUFF
-        UpdatePlayer(&player, deltaTime, tilemap, god_mode);
+        UpdatePlayer(&game.player, deltaTime, game.tilemap, game.god_mode);
 
         // RENDER STUFF
         BeginDrawing();
         ClearBackground(DARKGRAY); // clear the screen
 
-        DrawTilemap(tilemap, tiles);
-        DebugHighlightNeighbouringTiles(player.pos, tilemap);
+        DrawTilemap(game.tilemap, game.tiles);
+        DebugHighlightNeighbouringTiles(game.player.pos, game.tilemap);
 
         DrawText("Congrats! You created your first game!", 190, 200, 20, WHITE);
         // debug
         DrawFPS(WIN_WIDTH - 100, 30);
-        DrawPlayerCoords(&player);
-        if (god_mode)
+        DrawPlayerCoords(&game.player);
+        if (game.god_mode)
             DrawText("GODMODE", WIN_WIDTH / 2, 10, 15, RED);
 
         // player
-        DrawPlayer(&player);
+        DrawPlayer(&game.player);
 
         EndDrawing();
     }
 
     CloseWindow();
+    FreeGameData(&game);
 
     return 0;
+}
+void InitGameData(GameData *game)
+{
+    game->god_mode = false;
+    game->player = NewPlayer((Vector2){400, 300}, "resources/player.png");
+    game->tiles = malloc(sizeof(Tile)*2);
+    game->tiles[0] = NewTile("resources/grass-tile.png");
+    game->tiles[1] = NewTile("resources/ground-tile.png");
+    game->tilemap = malloc(sizeof(int)*MAP_WIDTH*MAP_HEIGHT);
+    ImportTilemap("resources/map.csv", game->tilemap);
+}
+void FreeGameData(GameData *game)
+{
+    free(game->tiles);
+    free(game->tilemap);
 }

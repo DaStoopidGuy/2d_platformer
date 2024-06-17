@@ -1,6 +1,6 @@
 #include "player.h"
+#include "common.h"
 #include "tile.h"
-#include "raymath.h"
 
 Player NewPlayer(Vector2 pos, const char *texture_file_name)
 {
@@ -42,7 +42,7 @@ void CollidePlayerWithTileRec(Player *player, Rectangle tile_rec)
     }
 }
 
-void CollidePlayerWithTilemap(Player *player, int tilemap[][MAP_WIDTH])
+void CollidePlayerWithTilemap(Player *player, int *tilemap)
 {
     int tiles_around[9][2];
     GetTilesAround(tiles_around, player->pos);
@@ -59,16 +59,17 @@ void CollidePlayerWithTilemap(Player *player, int tilemap[][MAP_WIDTH])
             TILE_SIZE,
             TILE_SIZE,
         };
-        if (tilemap[y][x] != TILE_EMPTY)
+        if (tilemap[y * MAP_WIDTH + x] != TILE_EMPTY)
             CollidePlayerWithTileRec(player, tile_rect);
     }
 }
 
-void UpdatePlayer(Player *player, float deltaTime, int tilemap[][MAP_WIDTH], bool godmode)
+void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode)
 {
     bool right_key = IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D);
     bool left_key = IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A);
     bool space_key = IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_W);
+
     // Horizontal movement
     int player_x_direction = (right_key - left_key);
     player->vel.x = PLAYER_H_SPD * player_x_direction * deltaTime;
