@@ -2,7 +2,9 @@
 
 enum
 {
-    TILE_EMPTY = -1
+    TILE_EMPTY = -1,
+    TILE_GRASS = 0,
+    TILE_GROUND = 1
 };
 
 Tile NewTile();

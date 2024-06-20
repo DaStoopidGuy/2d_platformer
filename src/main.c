@@ -4,8 +4,8 @@
 #include "tile.h"
 #include <stdlib.h>
 
-void InitGameData(GameData *game);
-void FreeGameData(GameData *game);
+void InitGameData(GameData *gd);
+void FreeGameData(GameData *gd);
 
 int main(void)
 {
@@ -33,6 +33,7 @@ int main(void)
         DebugHighlightNeighbouringTiles(game.player.pos, game.tilemap);
 
         DrawText("Congrats! You created your first game!", 190, 200, 20, WHITE);
+
         // debug
         DrawFPS(WIN_WIDTH - 100, 30);
         DrawPlayerCoords(&game.player);
@@ -50,18 +51,21 @@ int main(void)
 
     return 0;
 }
-void InitGameData(GameData *game)
+
+void InitGameData(GameData *gd)
 {
-    game->god_mode = false;
-    game->player = NewPlayer((Vector2){400, 300}, "resources/player.png");
-    game->tiles = malloc(sizeof(Tile)*2);
-    game->tiles[0] = NewTile("resources/grass-tile.png");
-    game->tiles[1] = NewTile("resources/ground-tile.png");
-    game->tilemap = malloc(sizeof(int)*MAP_WIDTH*MAP_HEIGHT);
-    ImportTilemap("resources/map.csv", game->tilemap);
+    gd->god_mode = false;
+    gd->player   = NewPlayer((Vector2){400, 300}, "resources/player.png");
+    gd->tiles    = malloc(sizeof(Tile)*2);
+    gd->tiles[0] = NewTile("resources/grass-tile.png");
+    gd->tiles[1] = NewTile("resources/ground-tile.png");
+    gd->tilemap  = malloc(sizeof(int)*MAP_WIDTH*MAP_HEIGHT);
+    ImportTilemap("resources/map.csv", gd->tilemap);
 }
-void FreeGameData(GameData *game)
+
+void FreeGameData(GameData *gd)
 {
-    free(game->tiles);
-    free(game->tilemap);
+    printf("Destroying shit\n");
+    free(gd->tiles);
+    free(gd->tilemap);
 }

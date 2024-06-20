@@ -18,7 +18,7 @@ void DrawTile(Tile tile, int x, int y)
     DrawTexture(tile.texture, x, y, WHITE);
 }
 
-void DrawTilemap(int *tilemap, Tile tiles[])
+void DrawTilemap(int *tilemap, Tile *tiles)
 {
     // tilemap
     for (int y = 0; y < MAP_HEIGHT; y++)
@@ -27,15 +27,15 @@ void DrawTilemap(int *tilemap, Tile tiles[])
         {
             switch (tilemap[y * MAP_WIDTH + x])
             {
-            case -1: // air
+            case TILE_EMPTY: // air
                 break;
 
-            case 0:
+            case TILE_GRASS:
             {
                 DrawTile(tiles[0], x * TILE_SIZE, y * TILE_SIZE);
                 break;
             }
-            case 1:
+            case TILE_GROUND:
             {
                 DrawTile(tiles[1], x * TILE_SIZE, y * TILE_SIZE);
                 break;
