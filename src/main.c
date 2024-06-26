@@ -3,6 +3,7 @@
 #include "structs.h"
 #include "tile.h"
 #include <stdlib.h>
+#include <assert.h>
 
 void InitGameData(GameData *gd);
 void FreeGameData(GameData *gd);
@@ -65,7 +66,6 @@ void InitGameData(GameData *gd)
 
 void FreeGameData(GameData *gd)
 {
-    printf("Destroying shit\n");
     free(gd->tiles);
     free(gd->tilemap);
 }
