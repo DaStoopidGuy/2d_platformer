@@ -1,5 +1,7 @@
 # 2D Platformer
-![screenshot](screenshot.png)
+![main menu screenshot](menu.png)  
+  
+![in game screenshot](game.png)
 Welcome to my 2D Platformer project  
 **This project is currently under development...**  
 I used the raylib game library to develop it in C.  
