@@ -97,6 +97,7 @@ void CollidePlayerWithTilemapY(Player *player, int *tilemap)
 
 void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode)
 {
+    // TODO: use a single pos vector everywhere
     // HACK: teleport back to center of screen
     if (IsKeyPressed(KEY_ZERO))
     {
