@@ -39,7 +39,7 @@ int main(void)
     Rectangle quit_button_rec = (Rectangle){WIN_WIDTH/2 - BTN_W/2, WIN_HEIGHT/2 + BTN_H + 10, BTN_W, BTN_H};
     const int button_text_size = 30;
 
-    GuiLoadStyle("src/style_dark.rgs");
+    GuiLoadStyle(RESOURCES_PATH "style_dark.rgs");
 
     bool shouldQuit = false;
     while (!WindowShouldClose() && !shouldQuit)
@@ -119,12 +119,12 @@ bool GameLoop()
 void InitGameData(GameData *gd)
 {
     gd->god_mode = false;
-    gd->player   = NewPlayer((Vector2){400, 300}, "resources/player.png");
+    gd->player   = NewPlayer((Vector2){400, 300}, RESOURCES_PATH "player.png");
     gd->tiles    = malloc(sizeof(Tile)*2);
-    gd->tiles[0] = NewTile("resources/grass-tile.png");
-    gd->tiles[1] = NewTile("resources/ground-tile.png");
+    gd->tiles[0] = NewTile(RESOURCES_PATH "grass-tile.png");
+    gd->tiles[1] = NewTile(RESOURCES_PATH "ground-tile.png");
     gd->tilemap  = malloc(sizeof(int)*MAP_WIDTH*MAP_HEIGHT);
-    ImportTilemap("resources/map.csv", gd->tilemap);
+    ImportTilemap(RESOURCES_PATH "map.csv", gd->tilemap);
 }
 
 void FreeGameData(GameData *gd)

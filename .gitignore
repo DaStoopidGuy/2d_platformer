@@ -2,3 +2,6 @@
 *.o
 .vscode/
 2d_platformer
+build/
+.cache/
+compile_commands.json
