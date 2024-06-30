@@ -17,8 +17,9 @@ typedef struct
 } Tile;
 
 typedef struct {
+    RenderTexture2D target;
     Player player;
     bool god_mode;
     Tile *tiles;
     int *tilemap;
-} GameData;
+} Game;

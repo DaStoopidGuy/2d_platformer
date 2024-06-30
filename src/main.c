@@ -8,11 +8,11 @@
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
-void InitGameData(GameData *gd);
-void FreeGameData(GameData *gd);
+void InitGameData(Game *gd);
+void FreeGameData(Game *gd);
 bool GameLoop();
 
-GameData game;
+Game game;
 
 int main(void)
 {
@@ -61,18 +61,19 @@ int main(void)
         EndDrawing();
     }
     // Cleanup
-    CloseWindow();
     FreeGameData(&game);
+    CloseWindow();
 
     return 0;
 }
 
 bool GameLoop()
 {
+    bool showDebug = false;
     bool shouldQuit = false;
     while (true)
     {
-        BeginDrawing();
+        // TODO: draw to a small render target first then scale it up to window size
         float deltaTime = GetFrameTime();
 
         // handle window exit
@@ -90,45 +91,69 @@ bool GameLoop()
         if (IsKeyPressed(KEY_G))
             game.god_mode = !game.god_mode;
 
+        if (IsKeyPressed(KEY_BACKSLASH))
+            showDebug = !showDebug;
+
         // UPDATE STUFF
         UpdatePlayer(&game.player, deltaTime, game.tilemap, game.god_mode);
 
         // RENDER STUFF
+        BeginTextureMode(game.target);
+
         ClearBackground((Color){48,122,169}); // clear the screen
-        // ClearBackground(DARKGRAY);
+
+        if (game.god_mode)
+            DrawText("GODMODE", 73, 1, 1, RED);
 
         DrawTilemap(game.tilemap, game.tiles);
         DebugHighlightNeighbouringTiles(game.player.pos, game.tilemap);
 
-        DrawText("Congrats! You suck!", 190, 200, 20, WHITE);
-
-        // debug
-        DrawFPS(WIN_WIDTH - 100, 30);
-        DrawPlayerCoords(&game.player);
-        if (game.god_mode)
-            DrawText("GODMODE", WIN_WIDTH / 2, 10, 15, RED);
 
         // player
         DrawPlayer(&game.player);
+
+        EndTextureMode();
+
+        BeginDrawing();
+        ClearBackground(BLUE);
+        DrawTexturePro(
+                       game.target.texture,
+                       (Rectangle){0, 0, game.target.texture.width, -game.target.texture.height},
+                       (Rectangle){0, 0, WIN_WIDTH, WIN_HEIGHT},
+                       (Vector2){0, 0},
+                       0.0f,
+                       WHITE
+        );
+
+        // debug
+        if (showDebug)
+        {
+        DrawFPS(WIN_WIDTH - 100, 30);
+        DrawPlayerCoords(&game.player);
+        DrawText("Congrats! You suck!", 190, 200, 20, WHITE);
+        }
 
         EndDrawing();
     }
     return shouldQuit;
 }
 
-void InitGameData(GameData *gd)
+void InitGameData(Game *g)
 {
-    gd->god_mode = false;
-    gd->player   = NewPlayer((Vector2){400, 300}, "resources/player.png");
-    gd->tiles    = malloc(sizeof(Tile)*2);
-    gd->tiles[0] = NewTile("resources/grass-tile.png");
-    gd->tiles[1] = NewTile("resources/ground-tile.png");
-    gd->tilemap  = malloc(sizeof(int)*MAP_WIDTH*MAP_HEIGHT);
-    ImportTilemap("resources/map.csv", gd->tilemap);
+    g->target   = LoadRenderTexture(200, 152);
+    g->god_mode = false;
+    g->player   = NewPlayer((Vector2){0, 0}, "resources/player.png");
+    g->tiles    = malloc(sizeof(Tile)*2);
+    g->tiles[0] = NewTile("resources/grass-tile.png");
+    g->tiles[1] = NewTile("resources/ground-tile.png");
+    g->tilemap  = malloc(sizeof(int)*MAP_WIDTH*MAP_HEIGHT);
+    ImportTilemap("resources/map.csv", g->tilemap);
 }
 
-void FreeGameData(GameData *gd)
+void FreeGameData(Game *g)
 {
-    free(gd->tiles);
-    free(gd->tilemap);
+    UnloadRenderTexture(g->target);
+    DestroyPlayer(&g->player);
+    free(g->tiles);
+    free(g->tilemap);
 }

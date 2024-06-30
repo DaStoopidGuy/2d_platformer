@@ -13,6 +13,11 @@ Player NewPlayer(Vector2 pos, const char *texture_file_name)
     return player;
 }
 
+void DestroyPlayer(Player *player)
+{
+    UnloadTexture(player->texture);
+}
+
 void SetPlayerRecPosToPlayerPos(Player *player)
 {
     player->rec.x = player->pos.x;

@@ -8,10 +8,10 @@
 
 #define GRAVITY 11
 
-#define PLAYER_H_SPD 200
-#define PLAYER_JUMP 5
+#define PLAYER_H_SPD 70
+#define PLAYER_JUMP 3.1
 
-#define TILE_SIZE 32
+#define TILE_SIZE 8
 
 #define MAP_WIDTH 25
 #define MAP_HEIGHT 19
