@@ -5,10 +5,11 @@ SRC_DIRS := ./src
 SRCS := $(wildcard $(SRC_DIRS)/*.c)
 OBJS := $(SRCS:.c=.o)
 OBJS := $(notdir $(OBJS))
+DEPS := $(OBJS:.o=.d)
 
 CC = gcc
 INC_FLAGS = -Iinclude
-CFLAGS = $(INC_FLAGS) -std=c99 -ggdb
+CFLAGS = $(INC_FLAGS) -std=c99 -ggdb -MMD -MP
 
 # detect OS
 ifeq ($(OS),Windows_NT)
@@ -56,3 +57,5 @@ debug: $(TARGET_EXEC)
 # HACK just hardcoded windows cross compilation on linux
 windows-cross:
 	x86_64-w64-mingw32-gcc src/*.c -o 2d_platformer.exe -Iinclude -Llib -lraylib -lopengl32 -lgdi32 -lwinmm
+
+-include $(DEPS)
