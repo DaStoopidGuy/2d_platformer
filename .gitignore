@@ -1,4 +1,5 @@
 *.exe
 *.o
+*.d
 .vscode/
 2d_platformer

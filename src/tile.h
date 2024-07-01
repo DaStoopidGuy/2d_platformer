@@ -7,7 +7,7 @@ enum
     TILE_GROUND = 1
 };
 
-Tile NewTile();
+Tile NewTile(const char *filename);
 void DrawTile(Tile tile, int x, int y);
 void DrawTilemap(int *tilemap, Tile *tiles);
 
