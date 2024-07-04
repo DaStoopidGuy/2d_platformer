@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/home/sarebjay/code/projects/2d_platformer/build",
+  "command": "/usr/bin/cc  -I/home/sarebjay/code/projects/2d_platformer/include -std=gnu99 -o CMakeFiles/2d_platformer.dir/src/main.c.o -c /home/sarebjay/code/projects/2d_platformer/src/main.c",
+  "file": "/home/sarebjay/code/projects/2d_platformer/src/main.c"
+},
+{
+  "directory": "/home/sarebjay/code/projects/2d_platformer/build",
+  "command": "/usr/bin/cc  -I/home/sarebjay/code/projects/2d_platformer/include -std=gnu99 -o CMakeFiles/2d_platformer.dir/src/player.c.o -c /home/sarebjay/code/projects/2d_platformer/src/player.c",
+  "file": "/home/sarebjay/code/projects/2d_platformer/src/player.c"
+},
+{
+  "directory": "/home/sarebjay/code/projects/2d_platformer/build",
+  "command": "/usr/bin/cc  -I/home/sarebjay/code/projects/2d_platformer/include -std=gnu99 -o CMakeFiles/2d_platformer.dir/src/tile.c.o -c /home/sarebjay/code/projects/2d_platformer/src/tile.c",
+  "file": "/home/sarebjay/code/projects/2d_platformer/src/tile.c"
+}
+]

@@ -1,0 +1,4 @@
+/home/sarebjay/code/projects/2d_platformer/build/CMakeFiles/2d_platformer.dir
+/home/sarebjay/code/projects/2d_platformer/build/CMakeFiles/run.dir
+/home/sarebjay/code/projects/2d_platformer/build/CMakeFiles/edit_cache.dir
+/home/sarebjay/code/projects/2d_platformer/build/CMakeFiles/rebuild_cache.dir

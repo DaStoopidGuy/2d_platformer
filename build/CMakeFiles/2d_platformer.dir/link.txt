@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/2d_platformer.dir/src/main.c.o CMakeFiles/2d_platformer.dir/src/player.c.o CMakeFiles/2d_platformer.dir/src/tile.c.o -o 2d_platformer  -lraylib -lm 

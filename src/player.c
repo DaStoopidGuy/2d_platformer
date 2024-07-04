@@ -3,35 +3,32 @@
 #include "tile.h"
 #include <raylib.h>
 
-Player NewPlayer(Vector2 pos, const char *texture_file_name)
-{
+Player NewPlayer(Vector2 pos, const char *texture_file_name) {
     Player player = {0};
     player.pos = pos;
     player.is_on_ground = false;
     player.texture = LoadTexture(texture_file_name);
-    player.rec = (Rectangle){player.pos.x, player.pos.y, player.texture.width, player.texture.height};
+    player.rec = (Rectangle){player.pos.x, player.pos.y, player.texture.width,
+                             player.texture.height};
+    player.facing = 1;
     return player;
 }
 
-void DestroyPlayer(Player *player)
-{
-    UnloadTexture(player->texture);
-}
+void DestroyPlayer(Player *player) { UnloadTexture(player->texture); }
 
-void SetPlayerRecPosToPlayerPos(Player *player)
-{
+void SetPlayerRecPosToPlayerPos(Player *player) {
     player->rec.x = player->pos.x;
     player->rec.y = player->pos.y;
 }
 
-void CollidePlayerWithTileRecX(Player *player, Rectangle tile_rec)
-{
-    if (CheckCollisionRecs(player->rec, tile_rec))
-    {
-        if (player->vel.x > 0) // moving right and collides with left side of tile
+void CollidePlayerWithTileRecX(Player *player, Rectangle tile_rec) {
+    if (CheckCollisionRecs(player->rec, tile_rec)) {
+        if (player->vel.x >
+            0) // moving right and collides with left side of tile
             player->pos.x = tile_rec.x - player->rec.width;
 
-        else if (player->vel.x < 0) // moving left and collides with right side of tile
+        else if (player->vel.x <
+                 0) // moving left and collides with right side of tile
             player->pos.x = tile_rec.x + tile_rec.width;
 
         player->vel.x = 0;
@@ -39,16 +36,15 @@ void CollidePlayerWithTileRecX(Player *player, Rectangle tile_rec)
     }
 }
 
-void CollidePlayerWithTileRecY(Player *player, Rectangle tile_rec)
-{
-    if (CheckCollisionRecs(player->rec, tile_rec))
-    {
-        if (player->vel.y > 0) // player is falling and collides with top of tile
+void CollidePlayerWithTileRecY(Player *player, Rectangle tile_rec) {
+    if (CheckCollisionRecs(player->rec, tile_rec)) {
+        if (player->vel.y >
+            0) // player is falling and collides with top of tile
         {
             player->pos.y = tile_rec.y - player->rec.height;
             player->is_on_ground = true;
-        }
-        else if (player->vel.y < 0) // player is jumping and collides with the bottom of tile
+        } else if (player->vel.y <
+                   0) // player is jumping and collides with the bottom of tile
             player->pos.y = tile_rec.y + tile_rec.height;
 
         player->vel.y = 0;
@@ -56,13 +52,11 @@ void CollidePlayerWithTileRecY(Player *player, Rectangle tile_rec)
     }
 }
 
-void CollidePlayerWithTilemapX(Player *player, int *tilemap)
-{
+void CollidePlayerWithTilemapX(Player *player, int *tilemap) {
     int tiles_around[9][2];
     GetTilesAround(tiles_around, player->pos);
 
-    for (int i = 0; i < 9; i++)
-    {
+    for (int i = 0; i < 9; i++) {
         int x = tiles_around[i][0];
         int y = tiles_around[i][1];
 
@@ -78,13 +72,11 @@ void CollidePlayerWithTilemapX(Player *player, int *tilemap)
     }
 }
 
-void CollidePlayerWithTilemapY(Player *player, int *tilemap)
-{
+void CollidePlayerWithTilemapY(Player *player, int *tilemap) {
     int tiles_around[9][2];
     GetTilesAround(tiles_around, player->pos);
 
-    for (int i = 0; i < 9; i++)
-    {
+    for (int i = 0; i < 9; i++) {
         int x = tiles_around[i][0];
         int y = tiles_around[i][1];
 
@@ -100,38 +92,38 @@ void CollidePlayerWithTilemapY(Player *player, int *tilemap)
     }
 }
 
-void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode)
-{
+void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
     // TODO: use a single pos vector everywhere
     // HACK: teleport back to center of screen
-    if (IsKeyPressed(KEY_ZERO))
-    {
-        player->pos.x = WIN_WIDTH/2 - player->rec.width/2;
-        player->pos.y = WIN_HEIGHT/2 - player->rec.height/2;
+    if (IsKeyPressed(KEY_ZERO)) {
+        player->pos.x = WIN_WIDTH / 2 - player->rec.width / 2;
+        player->pos.y = WIN_HEIGHT / 2 - player->rec.height / 2;
     }
 
     bool right_key = IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D);
     bool left_key = IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A);
-    bool space_key = IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_W);
+    bool space_key =
+        IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_W);
 
     // Horizontal movement
     int player_x_direction = (right_key - left_key);
     player->vel.x = PLAYER_H_SPD * player_x_direction * deltaTime;
 
-    if (godmode)
-    {
-        int player_y_direction = ((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) - (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)));
+    // update player facing
+    if (player_x_direction != 0)
+        player->facing = player_x_direction;
+
+    if (godmode) {
+        int player_y_direction = ((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) -
+                                  (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)));
         player->vel.y = PLAYER_H_SPD * player_y_direction * deltaTime;
 
         // update player position
         player->pos.x += player->vel.x;
         player->pos.y += player->vel.y;
-    }
-    else
-    {
+    } else {
         // Jumping on jump key
-        if (space_key && player->is_on_ground)
-        {
+        if (space_key && player->is_on_ground) {
             player->vel.y = -PLAYER_JUMP;
             player->is_on_ground = false;
         }
@@ -153,11 +145,18 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode)
         CollidePlayerWithTilemapY(player, tilemap);
     }
 }
-void DrawPlayer(Player *player)
-{
-    DrawTextureV(player->texture, player->pos, WHITE);
+void DrawPlayer(Player *player) {
+    // DrawTextureV(player->texture, player->pos, WHITE);
+    Rectangle frame_rec = (Rectangle){0, 0, player->facing * player->rec.width,
+                                      player->rec.height};
+    // if (player->facing > 0)
+    //     frame_rec.width = player->rec.width;
+    // else (player->facing < 0) {
+    //     frame_rec.width = -player->rec.width;
+    // }
+    DrawTextureRec(player->texture, frame_rec, player->pos, WHITE);
 }
-void DrawPlayerCoords(Player *player)
-{
-    DrawText(TextFormat("%.0f %.0f", player->pos.x, player->pos.y), 20, 20, 20, WHITE);
+void DrawPlayerCoords(Player *player) {
+    DrawText(TextFormat("%.0f %.0f", player->pos.x, player->pos.y), 20, 20, 20,
+             WHITE);
 }
