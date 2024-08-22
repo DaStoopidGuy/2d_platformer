@@ -4,4 +4,4 @@
 .vscode/
 2d_platformer
 .cache/
-build/*
+build/

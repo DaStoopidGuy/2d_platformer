@@ -8,8 +8,8 @@
 #define RAYGUI_IMPLEMENTATION
 #include <raygui.h>
 
-void InitGameData(Game *gd);
-void FreeGameData(Game *gd);
+void InitGameData(Game *g);
+void FreeGameData(Game *g);
 bool GameLoop();
 
 Game game;
@@ -20,6 +20,7 @@ float win_height = WIN_HEIGHT;
 int main(void) {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(win_width, win_height, "2d Platformer");
+    InitAudioDevice();
     SetTargetFPS(60);
     SetExitKey(KEY_NULL);
 
@@ -43,7 +44,10 @@ int main(void) {
         win_width / 2. - BTN_W / 2, win_height / 2. + BTN_H + 10, BTN_W, BTN_H};
     const int button_text_size = 30;
 
-    GuiLoadStyle("resources/style_dark.rgs");
+    GuiLoadStyle(ASSETS_PATH "style_dark.rgs");
+
+    // HACK: testing audio
+    // music = LoadMusicStream("resources/")
 
     bool shouldQuit = false;
     while (!WindowShouldClose() && !shouldQuit) {
@@ -76,6 +80,7 @@ int main(void) {
     }
     // Cleanup
     FreeGameData(&game);
+    CloseAudioDevice();
     CloseWindow();
 
     return 0;
@@ -155,12 +160,12 @@ bool GameLoop() {
 void InitGameData(Game *g) {
     g->target = LoadRenderTexture(200, 152);
     g->god_mode = false;
-    g->player = NewPlayer((Vector2){0, 0}, "resources/player.png");
+    g->player = NewPlayer((Vector2){0, 0}, ASSETS_PATH "player.png");
     g->tiles = malloc(sizeof(Tile) * 2);
-    g->tiles[0] = NewTile("resources/grass-tile.png");
-    g->tiles[1] = NewTile("resources/ground-tile.png");
+    g->tiles[0] = NewTile(ASSETS_PATH "grass-tile.png");
+    g->tiles[1] = NewTile(ASSETS_PATH "ground-tile.png");
     g->tilemap = malloc(sizeof(int) * MAP_WIDTH * MAP_HEIGHT);
-    ImportTilemap("resources/map.csv", g->tilemap);
+    ImportTilemap(ASSETS_PATH "map.csv", g->tilemap);
 }
 
 void FreeGameData(Game *g) {

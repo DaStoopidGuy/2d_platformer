@@ -1,2 +1,22 @@
 # Hashes of file build rules.
 084dd9028822631171a4117918980599 CMakeFiles/run
+87c9cacefed5509a03da13c11a8213d9 _deps/raylib-build/CMakeFiles/uninstall
+ebb37f76ae0bb509f311156b72fdca81 _deps/raylib-build/raylib/external/glfw/src/CMakeFiles/update_mappings
+f895fbf1a1020a1cfa3f6801eb4d8f58 _deps/raylib-build/raylib/external/glfw/src/fractional-scale-v1-client-protocol-code.h
+ea6b86985dfd22388005c383acba7f70 _deps/raylib-build/raylib/external/glfw/src/fractional-scale-v1-client-protocol.h
+cab6856c326fd5e2dd6e53d1d6d5bb22 _deps/raylib-build/raylib/external/glfw/src/idle-inhibit-unstable-v1-client-protocol-code.h
+71eb0d1a75cb1958a4e86421d49c6082 _deps/raylib-build/raylib/external/glfw/src/idle-inhibit-unstable-v1-client-protocol.h
+c64f2594a35b20d5dca0c48a37e2e7c3 _deps/raylib-build/raylib/external/glfw/src/pointer-constraints-unstable-v1-client-protocol-code.h
+25b44fd015d86334469717d99644546a _deps/raylib-build/raylib/external/glfw/src/pointer-constraints-unstable-v1-client-protocol.h
+ae9fe3f20316a6c1e156a4bcccbc88f8 _deps/raylib-build/raylib/external/glfw/src/relative-pointer-unstable-v1-client-protocol-code.h
+12d5e3252600082dfde75fe2fc1428d7 _deps/raylib-build/raylib/external/glfw/src/relative-pointer-unstable-v1-client-protocol.h
+a8d83621621e3f53037ed44abc9599b7 _deps/raylib-build/raylib/external/glfw/src/viewporter-client-protocol-code.h
+057b9adcee68c892b194a135110c0b27 _deps/raylib-build/raylib/external/glfw/src/viewporter-client-protocol.h
+504c73f5bd6a6fabf71704aca7ac8899 _deps/raylib-build/raylib/external/glfw/src/wayland-client-protocol-code.h
+8c4a59b640090eaa7e3f700c8c904020 _deps/raylib-build/raylib/external/glfw/src/wayland-client-protocol.h
+adefcd01743e9725eb05c5df8cc1813a _deps/raylib-build/raylib/external/glfw/src/xdg-activation-v1-client-protocol-code.h
+6b9b1687d97efcefae84365912a16081 _deps/raylib-build/raylib/external/glfw/src/xdg-activation-v1-client-protocol.h
+04f0b62ad8251efba8b83e09f13fbc29 _deps/raylib-build/raylib/external/glfw/src/xdg-decoration-unstable-v1-client-protocol-code.h
+d0371e7015bd486b1e2c96b6ba48fa48 _deps/raylib-build/raylib/external/glfw/src/xdg-decoration-unstable-v1-client-protocol.h
+843414db93c04c687fa202ecebd016ee _deps/raylib-build/raylib/external/glfw/src/xdg-shell-client-protocol-code.h
+13f6a868831af5511f9fb0abd7a7fa72 _deps/raylib-build/raylib/external/glfw/src/xdg-shell-client-protocol.h
