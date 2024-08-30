@@ -6,7 +6,7 @@ Welcome to my 2D Platformer project
 **This project is currently under development...**  
 I used the raylib game library to develop it in C.  
 
-My goal with this particular project is the learn the basics of game architecture along with how things work in C language and working with makefiles.
+My goal with this particular project is the learn the basics of game architecture along with how things work in C language and working with makefiles and/or cmake.
 
 ## Quickstart
 This project is now using CMake as its build system.  
@@ -20,4 +20,4 @@ $ cmake ..
 $ make run
 ```
 
-Support for OSes other than linux is currently untested. On linux, raylib lib files must be present in your PATH. (installed on your system)
+Support for OSes other than linux is currently untested. It automatically fetches the library for you.
