@@ -1,1 +1,0 @@
-/usr/bin/cc -rdynamic CMakeFiles/2d_platformer.dir/src/main.c.o CMakeFiles/2d_platformer.dir/src/player.c.o CMakeFiles/2d_platformer.dir/src/tile.c.o -o 2d_platformer  _deps/raylib-build/raylib/libraylib.a -lm -lpthread -lOpenGL -lGLX -lGLU -Wl,-Bstatic -lrt -Wl,-Bdynamic -lm -ldl

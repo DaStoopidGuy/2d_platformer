@@ -4,4 +4,5 @@
 .vscode/
 2d_platformer
 .cache/
+.zprofile
 build/

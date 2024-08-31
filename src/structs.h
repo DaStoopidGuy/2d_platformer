@@ -17,10 +17,3 @@ typedef struct
     Rectangle src;
 } Tile;
 
-typedef struct {
-    RenderTexture2D target;
-    Player player;
-    bool god_mode;
-    Tile *tiles;
-    int *tilemap;
-} Game;

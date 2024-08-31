@@ -96,8 +96,8 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
     // TODO: use a single pos vector everywhere
     // HACK: teleport back to center of screen
     if (IsKeyPressed(KEY_ZERO)) {
-        player->pos.x = WIN_WIDTH / 2 - player->rec.width / 2;
-        player->pos.y = WIN_HEIGHT / 2 - player->rec.height / 2;
+        player->pos.x = (TILE_SIZE * MAP_WIDTH) / 2 - player->rec.width / 2;
+        player->pos.y = (TILE_SIZE * MAP_HEIGHT) / 2 - player->rec.height / 2;
     }
 
     bool right_key = IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D);

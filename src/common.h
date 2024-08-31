@@ -15,3 +15,6 @@
 
 #define MAP_WIDTH 25
 #define MAP_HEIGHT 19
+
+extern float win_width;
+extern float win_height;
