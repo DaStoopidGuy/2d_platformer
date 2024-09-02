@@ -1,6 +1,8 @@
 #include "player.h"
+#include "animation.h"
 #include "common.h"
 #include "input.h"
+#include "raymath.h"
 #include "tile.h"
 #include <raylib.h>
 
@@ -8,9 +10,19 @@ Player NewPlayer(Vector2 pos, const char *texture_file_name) {
     Player player = {0};
     player.pos = pos;
     player.is_on_ground = false;
-    player.texture = LoadTexture(texture_file_name);
-    player.rec = (Rectangle){player.pos.x, player.pos.y, player.texture.width,
-                             player.texture.height};
+    // HACK: sprite animation mess
+    Texture2D spritesheet = LoadTexture(ASSETS_PATH "player-sheet.png");
+    int frames = 5;
+    Rectangle rects[5] = {
+        (Rectangle){.x = 0, .y = 0, .width = 8, .height = 8},
+        (Rectangle){.x = 8, .y = 0, .width = 8, .height = 8},
+        (Rectangle){.x = 16, .y = 0, .width = 8, .height = 8},
+        (Rectangle){.x = 24, .y = 0, .width = 8, .height = 8},
+        (Rectangle){.x = 32, .y = 0, .width = 8, .height = 8},
+    };
+
+    player.rec = (Rectangle){player.pos.x, player.pos.y, 8, 8};
+    player.animation = CreateSpriteAnimation(spritesheet, 8, rects, frames);
     player.facing = 1;
     return player;
 }
@@ -94,10 +106,12 @@ void CollidePlayerWithTilemapY(Player *player, int *tilemap) {
 }
 
 void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
+
     // HACK: teleport back to center of screen
     if (inputs.player_teleport_back) {
-        player->pos.x = (TILE_SIZE * MAP_WIDTH) / 2 - player->rec.width / 2;
-        player->pos.y = (TILE_SIZE * MAP_HEIGHT) / 2 - player->rec.height / 2;
+        player->pos.x = (TILE_SIZE * MAP_WIDTH) / 2.0 - player->rec.width / 2.0;
+        player->pos.y =
+            (TILE_SIZE * MAP_HEIGHT) / 2.0 - player->rec.height / 2.0;
     }
 
     // Horizontal movement
@@ -141,15 +155,21 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
     }
 }
 void DrawPlayer(Player *player) {
-    // DrawTextureV(player->texture, player->pos, WHITE);
-    Rectangle frame_rec = (Rectangle){0, 0, player->facing * player->rec.width,
-                                      player->rec.height};
-    // if (player->facing > 0)
-    //     frame_rec.width = player->rec.width;
-    // else (player->facing < 0) {
-    //     frame_rec.width = -player->rec.width;
-    // }
-    DrawTextureRec(player->texture, frame_rec, player->pos, WHITE);
+    Vector2 position = player->pos;
+    // NOTE: casting to int is to solve the animation rendering glitch
+    position.x = (int)position.x;
+    position.y = (int)position.y;
+    DrawSpriteAnimation(&player->animation, position, player->facing < 0,
+                        WHITE);
+
+    // TODO: this code below seems to mess with Godmode! and it doesn't work lol
+    // but rendering animations is fine
+
+    /*Rectangle dest = player->rec;*/
+    /*dest.x = (int) dest.x;*/
+    /*dest.y = (int) dest.y;*/
+    /*DrawSpriteAnimationPro(&player->animation, dest, Vector2Zero(), 0.0f,
+     * player->facing < 0, WHITE);*/
 }
 void DrawPlayerCoords(Player *player) {
     DrawText(TextFormat("%.0f %.0f", player->pos.x, player->pos.y), 20, 20, 20,

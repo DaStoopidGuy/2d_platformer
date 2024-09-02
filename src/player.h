@@ -1,5 +1,6 @@
 #pragma once
 #include "raylib.h"
+#include "animation.h"
 
 typedef struct {
     Vector2 pos;
@@ -8,6 +9,7 @@ typedef struct {
     bool is_on_ground;
     Texture2D texture;
     Rectangle rec;
+    SpriteAnimation animation;
 } Player;
 
 Player NewPlayer(Vector2 pos, const char *texture_file_name);

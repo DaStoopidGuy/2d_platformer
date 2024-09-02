@@ -1,11 +1,13 @@
 #include <stdlib.h>
-#include "common.h"
 #include "game.h"
+#include "common.h"
 #include "input.h"
+#include "tile.h"
 
 Game game;
 
 bool GameLoop() {
+    //TODO: remove Adele - Skyfall as the bgm when shipping the game
     Music bgm = LoadMusicStream(ASSETS_PATH "bgm.mp3");
     PlayMusicStream(bgm);
 
@@ -88,8 +90,8 @@ void InitGameData(Game *g) {
     g->god_mode = false;
     g->player = NewPlayer((Vector2){0, 0}, ASSETS_PATH "player.png");
     g->tiles = malloc(sizeof(Tile) * 2);
-    g->tiles[0] = NewTile(ASSETS_PATH "grass-tile.png");
-    g->tiles[1] = NewTile(ASSETS_PATH "ground-tile.png");
+    g->tiles[TILE_GRASS] = NewTile(ASSETS_PATH "grass-tile.png");
+    g->tiles[TILE_GROUND] = NewTile(ASSETS_PATH "ground-tile.png");
     g->tilemap = malloc(sizeof(int) * MAP_WIDTH * MAP_HEIGHT);
     ImportTilemap(ASSETS_PATH "map.csv", g->tilemap);
 }
