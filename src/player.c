@@ -1,5 +1,6 @@
 #include "player.h"
 #include "common.h"
+#include "input.h"
 #include "tile.h"
 #include <raylib.h>
 
@@ -93,20 +94,14 @@ void CollidePlayerWithTilemapY(Player *player, int *tilemap) {
 }
 
 void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
-    // TODO: use a single pos vector everywhere
     // HACK: teleport back to center of screen
-    if (IsKeyPressed(KEY_ZERO)) {
+    if (inputs.player_teleport_back) {
         player->pos.x = (TILE_SIZE * MAP_WIDTH) / 2 - player->rec.width / 2;
         player->pos.y = (TILE_SIZE * MAP_HEIGHT) / 2 - player->rec.height / 2;
     }
 
-    bool right_key = IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D);
-    bool left_key = IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A);
-    bool space_key =
-        IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_W);
-
     // Horizontal movement
-    int player_x_direction = (right_key - left_key);
+    int player_x_direction = (inputs.player_right - inputs.player_left);
     player->vel.x = PLAYER_H_SPD * player_x_direction * deltaTime;
 
     // update player facing
@@ -114,8 +109,8 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
         player->facing = player_x_direction;
 
     if (godmode) {
-        int player_y_direction = ((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) -
-                                  (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)));
+        int player_y_direction = inputs.player_down - inputs.player_up;
+
         player->vel.y = PLAYER_H_SPD * player_y_direction * deltaTime;
 
         // update player position
@@ -123,7 +118,7 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
         player->pos.y += player->vel.y;
     } else {
         // Jumping on jump key
-        if (space_key && player->is_on_ground) {
+        if (inputs.player_jump && player->is_on_ground) {
             player->vel.y = -PLAYER_JUMP;
             player->is_on_ground = false;
         }

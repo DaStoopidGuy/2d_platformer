@@ -1,7 +1,8 @@
 #include "tile.h"
-#include <string.h>
 #include "common.h"
-#include "raymath.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 Tile NewTile(const char *filename)
 {

@@ -1,4 +1,5 @@
-#include "common.h"
+#pragma once
+#include "raylib.h"
 
 enum
 {
@@ -6,6 +7,11 @@ enum
     TILE_GRASS = 0,
     TILE_GROUND = 1
 };
+
+typedef struct {
+    Texture2D texture;
+    Rectangle src;
+} Tile;
 
 Tile NewTile(const char *filename);
 void DrawTile(Tile tile, int x, int y);

@@ -1,7 +1,10 @@
-#include "menu.h"
 #include <raylib.h>
 #define RAYGUI_IMPLEMENTATION
 #include <raygui.h>
+
+#include "common.h"
+#include "menu.h"
+#include "game.h"
 
 void MainMenu() {
     // "main menu" label

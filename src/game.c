@@ -1,4 +1,7 @@
+#include <stdlib.h>
+#include "common.h"
 #include "game.h"
+#include "input.h"
 
 Game game;
 
@@ -9,6 +12,8 @@ bool GameLoop() {
     bool showDebug = false;
     bool shouldQuit = false;
     while (true) {
+        GetInputs();
+
         UpdateMusicStream(bgm);
         // TODO: draw to a small render target first then scale it up to window
         // size
@@ -27,14 +32,14 @@ bool GameLoop() {
         }
 
         // go back to main menu on pressing esc
-        if (IsKeyPressed(KEY_ESCAPE))
+        if (inputs.game_exit_to_menu)
             break;
 
         // toggle god mode on G
-        if (IsKeyPressed(KEY_G))
+        if (inputs.toggle_godmode)
             game.god_mode = !game.god_mode;
 
-        if (IsKeyPressed(KEY_BACKSLASH))
+        if (inputs.toggle_debug)
             showDebug = !showDebug;
 
         // UPDATE STUFF
