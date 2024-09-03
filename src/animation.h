@@ -19,7 +19,11 @@ void DrawSpriteAnimationPro(SpriteAnimation *animation, Rectangle dest,
 SpriteAnimation CreateSpriteAnimation(Texture2D texture, int fps,
                                       Rectangle rects[], int rects_length);
 
+SpriteAnimation CreateSpriteAnimationFromSpritesheet(Texture2D texture,
+                                                     int frames, int fps);
+
 void DestructionSpriteAnimation(SpriteAnimation *animation);
 
-void GetRectsArrayFromSpritesheet(Rectangle *rects, Texture2D texture,
-                                  int frames);
+// Returns a pointer to an array of rects calculated from the provided texture
+// and number of frames
+Rectangle *GetRectsArrayFromSpritesheet(Texture2D texture, int frames);

@@ -2,7 +2,6 @@
 #include "animation.h"
 #include "common.h"
 #include "input.h"
-#include "raymath.h"
 #include "tile.h"
 #include <raylib.h>
 
@@ -13,21 +12,16 @@ Player NewPlayer(Vector2 pos, const char *texture_file_name) {
     // HACK: sprite animation mess
     Texture2D spritesheet = LoadTexture(ASSETS_PATH "player-sheet.png");
     int frames = 5;
-    Rectangle rects[5] = {
-        (Rectangle){.x = 0, .y = 0, .width = 8, .height = 8},
-        (Rectangle){.x = 8, .y = 0, .width = 8, .height = 8},
-        (Rectangle){.x = 16, .y = 0, .width = 8, .height = 8},
-        (Rectangle){.x = 24, .y = 0, .width = 8, .height = 8},
-        (Rectangle){.x = 32, .y = 0, .width = 8, .height = 8},
-    };
 
-    player.rec = (Rectangle){player.pos.x, player.pos.y, 8, 8};
-    player.animation = CreateSpriteAnimation(spritesheet, 8, rects, frames);
+    player.animation = CreateSpriteAnimationFromSpritesheet(spritesheet, frames, 8);
+    player.rec = player.animation.rects[0];
     player.facing = 1;
     return player;
 }
 
-void DestroyPlayer(Player *player) { UnloadTexture(player->texture); }
+void DestroyPlayer(Player *player) {
+    DestructionSpriteAnimation(&player->animation);
+}
 
 void SetPlayerRecPosToPlayerPos(Player *player) {
     player->rec.x = player->pos.x;
