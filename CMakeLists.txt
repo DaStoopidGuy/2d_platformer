@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.11) # FetchContent is a 3.11 feature
 project(2d_platformer C)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_BUILD_TYPE Debug)
 
 # Adding Raylib
 include(FetchContent)
@@ -13,7 +14,8 @@ FetchContent_Declare(
     raylib
     GIT_REPOSITORY "https://github.com/raysan5/raylib.git"
     GIT_TAG "master"
-    GIT_PROGRESS TRUE
+    GIT_PROGRESS TRUE   # shows git download progress in stdout
+    GIT_SHALLOW TRUE       # only gets the latest files, ignoring commit history
 )
 
 FetchContent_MakeAvailable(raylib)
