@@ -4,6 +4,7 @@
 #include "input.h"
 #include "tile.h"
 #include <raylib.h>
+#include <raymath.h>
 
 Player NewPlayer(Vector2 pos, const char *texture_file_name) {
     Player player = {0};
@@ -124,6 +125,10 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
         // update player position
         player->pos.x += player->vel.x;
         player->pos.y += player->vel.y;
+
+        // also set the rect xy coords
+        player->rec.x = player->pos.x;
+        player->rec.y = player->pos.y;
     } else {
         // Jumping on jump key
         if (inputs.player_jump && player->is_on_ground) {
@@ -155,15 +160,6 @@ void DrawPlayer(Player *player) {
     position.y = (int)position.y;
     DrawSpriteAnimation(&player->animation, position, player->facing < 0,
                         WHITE);
-
-    // TODO: this code below seems to mess with Godmode! and it doesn't work lol
-    // but rendering animations is fine
-
-    /*Rectangle dest = player->rec;*/
-    /*dest.x = (int) dest.x;*/
-    /*dest.y = (int) dest.y;*/
-    /*DrawSpriteAnimationPro(&player->animation, dest, Vector2Zero(), 0.0f,
-     * player->facing < 0, WHITE);*/
 }
 void DrawPlayerCoords(Player *player) {
     DrawText(TextFormat("%.0f %.0f", player->pos.x, player->pos.y), 20, 20, 20,
