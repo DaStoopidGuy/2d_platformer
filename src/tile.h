@@ -1,21 +1,14 @@
 #pragma once
 #include "raylib.h"
 
-enum
+typedef enum
 {
     TILE_EMPTY = -1,
     TILE_GRASS = 0,
     TILE_GROUND = 1
-};
+} TileType;
 
-typedef struct {
-    Texture2D texture;
-    Rectangle src;
-} Tile;
-
-Tile NewTile(const char *filename);
-void DrawTile(Tile tile, int x, int y);
-void DrawTilemap(int *tilemap, Tile *tiles);
+void DrawTilemap(int *tilemap);
 
 void GetTilesAround(int tiles_around[9][2], Vector2 pos);
 

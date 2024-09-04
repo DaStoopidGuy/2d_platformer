@@ -2,6 +2,7 @@
 #include "game.h"
 #include "common.h"
 #include "input.h"
+#include "raylib.h"
 #include "tile.h"
 
 Game game;
@@ -55,7 +56,7 @@ bool GameLoop() {
         if (game.god_mode)
             DrawText("GODMODE", 73, 1, 1, RED);
 
-        DrawTilemap(game.tilemap, game.tiles);
+        DrawTilemap(game.tilemap);
         if (showDebug)
             DebugHighlightNeighbouringTiles(game.player.pos, game.tilemap);
 
@@ -87,18 +88,16 @@ bool GameLoop() {
 
 void InitGameData(Game *g) {
     g->target = LoadRenderTexture(200, 152);
+    g->atlas = LoadTexture(ASSETS_PATH "atlas.png");
     g->god_mode = false;
-    g->player = NewPlayer((Vector2){0, 0}, ASSETS_PATH "player.png");
-    g->tiles = malloc(sizeof(Tile) * 2);
-    g->tiles[TILE_GRASS] = NewTile(ASSETS_PATH "grass-tile.png");
-    g->tiles[TILE_GROUND] = NewTile(ASSETS_PATH "ground-tile.png");
+    g->player = NewPlayer((Vector2){0, 0});
     g->tilemap = malloc(sizeof(int) * MAP_WIDTH * MAP_HEIGHT);
     ImportTilemap(ASSETS_PATH "map.csv", g->tilemap);
 }
 
 void FreeGameData(Game *g) {
     UnloadRenderTexture(g->target);
+    UnloadTexture(g->atlas);
     DestroyPlayer(&g->player);
-    free(g->tiles);
     free(g->tilemap);
 }

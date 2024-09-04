@@ -1,27 +1,30 @@
 #include "player.h"
-#include "animation.h"
 #include "common.h"
+#include "game.h"
 #include "input.h"
+#include "sprite.h"
 #include "tile.h"
 #include <raylib.h>
 #include <raymath.h>
 
-Player NewPlayer(Vector2 pos, const char *texture_file_name) {
+Player NewPlayer(Vector2 pos) {
     Player player = {0};
     player.pos = pos;
-    player.is_on_ground = false;
-    // HACK: sprite animation mess
-    Texture2D spritesheet = LoadTexture(ASSETS_PATH "player-sheet.png");
-    int frames = 5;
-
-    player.animation = CreateSpriteAnimationFromSpritesheet(spritesheet, frames, 8);
-    player.rec = player.animation.rects[0];
+    player.vel = Vector2Zero();
     player.facing = 1;
+    player.is_on_ground = false;
+    player.rec = (Rectangle){0, 0, 8, 8};
+
+    // TODO: set proper sprites
+    player.animation_sprites[PLAYER_ANIM_IDLE] = SPRITE_GHOST_STATIC;
+    player.animation_sprites[PLAYER_ANIM_RUN] = SPRITE_GHOST_RUN;
+    player.animation_sprites[PLAYER_ANIM_JUMP] = SPRITE_GHOST_STATIC;
+    player.animation_sprites[PLAYER_ANIM_FALL] = SPRITE_GHOST_STATIC;
+
     return player;
 }
 
 void DestroyPlayer(Player *player) {
-    DestructionSpriteAnimation(&player->animation);
 }
 
 void SetPlayerRecPosToPlayerPos(Player *player) {
@@ -68,6 +71,10 @@ void CollidePlayerWithTilemapX(Player *player, int *tilemap) {
         int x = tiles_around[i][0];
         int y = tiles_around[i][1];
 
+        // TODO: uncomment it, its probably a solution to a bug
+        /*if (x == 0 && y == 0)*/
+        /*    continue;*/
+
         // get the rectangle for the tile
         Rectangle tile_rect = (Rectangle){
             x * TILE_SIZE,
@@ -88,6 +95,9 @@ void CollidePlayerWithTilemapY(Player *player, int *tilemap) {
         int x = tiles_around[i][0];
         int y = tiles_around[i][1];
 
+        /*if (x == 0 && y == 0)*/
+        /*    continue;*/
+
         // get the rectangle for the tile
         Rectangle tile_rect = (Rectangle){
             x * TILE_SIZE,
@@ -101,6 +111,7 @@ void CollidePlayerWithTilemapY(Player *player, int *tilemap) {
 }
 
 void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
+    player->animation_state = PLAYER_ANIM_IDLE;
 
     // HACK: teleport back to center of screen
     if (inputs.player_teleport_back) {
@@ -115,6 +126,10 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
         player->is_on_ground = false;
         player->animation_state = PLAYER_ANIM_JUMP;
     }
+
+    if (!player->is_on_ground && player->vel.y > 0)
+        player->animation_state = PLAYER_ANIM_FALL;
+
     // Horizontal movement
     int player_x_direction = (inputs.player_right - inputs.player_left);
     player->vel.x = PLAYER_H_SPD * player_x_direction * deltaTime;
@@ -122,6 +137,11 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
     // update player facing
     if (player_x_direction != 0)
         player->facing = player_x_direction;
+
+    // animation updates
+    if (player_x_direction && player->is_on_ground) {
+        player->animation_state = PLAYER_ANIM_RUN;
+    }
 
     // HACK: Godmode - Debug only
     if (godmode) {
@@ -174,8 +194,9 @@ void DrawPlayer(Player *player) {
     // NOTE: casting to int to solve the animation rendering glitch
     position.x = (int)position.x;
     position.y = (int)position.y;
-    DrawSpriteAnimation(&player->animation, position, player->facing < 0,
-                        WHITE);
+
+    DrawAnimatedSprite(player->animation_sprites[player->animation_state],
+                       game.atlas, position, player->facing < 0);
 }
 void DrawPlayerCoords(Player *player) {
     DrawText(TextFormat("%.0f %.0f", player->pos.x, player->pos.y), 20, 20, 20,

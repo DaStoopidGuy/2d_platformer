@@ -1,13 +1,12 @@
 #pragma once
 
 #include "player.h"
-#include "tile.h"
 
 typedef struct {
     RenderTexture2D target;
     Player player;
     bool god_mode;
-    Tile *tiles;
+    Texture2D atlas;
     int *tilemap;
 } Game;
 
