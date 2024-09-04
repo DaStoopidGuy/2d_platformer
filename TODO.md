@@ -1,3 +1,3 @@
 # TODO
 
-- understand why i need to update the player position before checking for collisions
+- use a single texture atlas for every texture2d required in the game

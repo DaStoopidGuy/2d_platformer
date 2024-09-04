@@ -109,6 +109,12 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
             (TILE_SIZE * MAP_HEIGHT) / 2.0 - player->rec.height / 2.0;
     }
 
+    // Jumping on jump key
+    if (inputs.player_jump && player->is_on_ground) {
+        player->vel.y = -PLAYER_JUMP;
+        player->is_on_ground = false;
+        player->animation_state = PLAYER_ANIM_JUMP;
+    }
     // Horizontal movement
     int player_x_direction = (inputs.player_right - inputs.player_left);
     player->vel.x = PLAYER_H_SPD * player_x_direction * deltaTime;
@@ -117,6 +123,7 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
     if (player_x_direction != 0)
         player->facing = player_x_direction;
 
+    // HACK: Godmode - Debug only
     if (godmode) {
         int player_y_direction = inputs.player_down - inputs.player_up;
 
@@ -129,18 +136,27 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
         // also set the rect xy coords
         player->rec.x = player->pos.x;
         player->rec.y = player->pos.y;
-    } else {
-        // Jumping on jump key
-        if (inputs.player_jump && player->is_on_ground) {
-            player->vel.y = -PLAYER_JUMP;
-            player->is_on_ground = false;
-        }
-        // Gravity
-        if (!player->is_on_ground)
-            player->vel.y += GRAVITY * deltaTime;
+        return;
+    }
 
+    // Gravity
+    if (!player->is_on_ground) {
+        player->vel.y += GRAVITY * deltaTime;
+    }
+
+    // Collision (also sets is_on_ground flag)
+    {
         // Reset ground flag before checking collisions
-        player->is_on_ground = false;
+        {
+            // convert player position to tilemap coordinates
+            int player_tile_y = (player->pos.y / TILE_SIZE) + 0.5f;
+            int player_tile_x = (player->pos.x / TILE_SIZE) + 0.5f;
+            // check the tile under player and see if it is empty
+            player_tile_y += 1;
+            TileType tile = tilemap[player_tile_y * MAP_WIDTH + player_tile_x];
+            if (tile == TILE_EMPTY)
+                player->is_on_ground = false;
+        }
 
         // Horizontal movement and Collison detection
         player->pos.x += player->vel.x;
@@ -155,7 +171,7 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
 }
 void DrawPlayer(Player *player) {
     Vector2 position = player->pos;
-    // NOTE: casting to int is to solve the animation rendering glitch
+    // NOTE: casting to int to solve the animation rendering glitch
     position.x = (int)position.x;
     position.y = (int)position.y;
     DrawSpriteAnimation(&player->animation, position, player->facing < 0,
