@@ -40,6 +40,12 @@ Sprite GetSprite(SpriteID sprite_id) {
             sprite.fps = 8;
             break;
         }
+        case SPRITE_GHOST_IDLE:
+        {
+            sprite.atlas_offset = (Vector2){32, 16};
+            sprite.frame_count = 5;
+            sprite.fps = 9;
+        }
         case SPRITE_COUNT:
         {
             break;

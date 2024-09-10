@@ -12,6 +12,7 @@ typedef enum SpriteID {
     SPRITE_GHOST_STATIC,
     SPRITE_GHOST_RUN,
     SPRITE_GHOST_JUMP,
+    SPRITE_GHOST_IDLE,
 
     SPRITE_NONE, //TODO: should i move it under count? as this enum signifies nothing
     SPRITE_COUNT
