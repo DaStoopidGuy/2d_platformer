@@ -17,7 +17,9 @@ bool GameLoop() {
     while (true) {
         GetInputs();
 
-        UpdateMusicStream(bgm);
+        if (game.god_mode)
+            UpdateMusicStream(bgm);
+
         // TODO: draw to a small render target first then scale it up to window
         // size
         float deltaTime = GetFrameTime();
