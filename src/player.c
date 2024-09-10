@@ -18,7 +18,7 @@ Player NewPlayer(Vector2 pos) {
     // TODO: set proper sprites
     player.animation_sprites[PLAYER_ANIM_IDLE] = SPRITE_GHOST_STATIC;
     player.animation_sprites[PLAYER_ANIM_RUN] = SPRITE_GHOST_RUN;
-    player.animation_sprites[PLAYER_ANIM_JUMP] = SPRITE_GHOST_STATIC;
+    player.animation_sprites[PLAYER_ANIM_JUMP] = SPRITE_GHOST_JUMP;
     player.animation_sprites[PLAYER_ANIM_FALL] = SPRITE_GHOST_STATIC;
 
     return player;
@@ -127,8 +127,13 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
         player->animation_state = PLAYER_ANIM_JUMP;
     }
 
-    if (!player->is_on_ground && player->vel.y > 0)
-        player->animation_state = PLAYER_ANIM_FALL;
+    if (!player->is_on_ground)
+    {
+        if  (player->vel.y > 0)
+            player->animation_state = PLAYER_ANIM_FALL;
+        else if (player->vel.y < 0)
+            player->animation_state = PLAYER_ANIM_JUMP;
+    }
 
     // Horizontal movement
     int player_x_direction = (inputs.player_right - inputs.player_left);
