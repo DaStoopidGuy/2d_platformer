@@ -13,6 +13,7 @@ typedef enum SpriteID {
     SPRITE_GHOST_RUN,
     SPRITE_GHOST_JUMP,
     SPRITE_GHOST_IDLE,
+    SPRITE_GHOST_FALL,
 
     SPRITE_NONE, //TODO: should i move it under count? as this enum signifies nothing
     SPRITE_COUNT
@@ -30,5 +31,5 @@ typedef struct Sprite {
 //
 
 Sprite GetSprite(SpriteID sprite_id);
-void DrawSprite(SpriteID sprite_id, Texture2D atlas, Vector2 pos, bool flip);
+void DrawStaticSprite(SpriteID sprite_id, Texture2D atlas, Vector2 pos, bool flip);
 void DrawAnimatedSprite(SpriteID sprite_id, Texture2D atlas, Vector2 pos, bool flip);

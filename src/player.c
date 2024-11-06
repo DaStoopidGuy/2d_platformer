@@ -19,7 +19,7 @@ Player NewPlayer(Vector2 pos) {
     player.animation_sprites[PLAYER_ANIM_IDLE] = SPRITE_GHOST_IDLE;
     player.animation_sprites[PLAYER_ANIM_RUN] = SPRITE_GHOST_RUN;
     player.animation_sprites[PLAYER_ANIM_JUMP] = SPRITE_GHOST_JUMP;
-    player.animation_sprites[PLAYER_ANIM_FALL] = SPRITE_GHOST_STATIC;
+    player.animation_sprites[PLAYER_ANIM_FALL] = SPRITE_GHOST_FALL;
 
     return player;
 }

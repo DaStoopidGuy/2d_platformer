@@ -7,6 +7,7 @@
 #include "game.h"
 
 void MainMenu() {
+    // UI Elements Setup
     // "main menu" label
     const char *label_text = "Main Menu";
     const int label_font_size = 50;
@@ -27,7 +28,7 @@ void MainMenu() {
 
     GuiLoadStyle(ASSETS_PATH "style_dark.rgs");
 
-    // Mainloop
+    // Mainloop of the menu
     bool shouldQuit = false;
     while (!WindowShouldClose() && !shouldQuit) {
         // handle window resize

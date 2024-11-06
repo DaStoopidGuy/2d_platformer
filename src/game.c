@@ -7,6 +7,7 @@
 
 Game game;
 
+// returns a boolean telling to exit the game or not
 bool GameLoop() {
     //TODO: remove Adele - Skyfall as the bgm when shipping the game
     Music bgm = LoadMusicStream(ASSETS_PATH "bgm.mp3");

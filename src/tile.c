@@ -30,7 +30,7 @@ void DrawTilemap(int *tilemap) {
                 break;
             }
             if (sprite_id != SPRITE_NONE)
-                DrawSprite(sprite_id, game.atlas,
+                DrawStaticSprite(sprite_id, game.atlas,
                            (Vector2){.x = x * TILE_SIZE, y * TILE_SIZE}, false);
         }
     }

@@ -45,6 +45,14 @@ Sprite GetSprite(SpriteID sprite_id) {
             sprite.atlas_offset = (Vector2){32, 16};
             sprite.frame_count = 6;
             sprite.fps = 9;
+            break;
+        }
+        case SPRITE_GHOST_FALL:
+        {
+            sprite.atlas_offset = (Vector2){0, 24};
+            sprite.frame_count = 3;
+            sprite.fps = 8;
+            break;
         }
         case SPRITE_COUNT:
         {
@@ -54,7 +62,7 @@ Sprite GetSprite(SpriteID sprite_id) {
     return sprite;
 }
 
-void DrawSprite(SpriteID sprite_id, Texture2D atlas, Vector2 pos, bool flip) {
+void DrawStaticSprite(SpriteID sprite_id, Texture2D atlas, Vector2 pos, bool flip) {
     if (sprite_id == SPRITE_NONE)
         return;
 
