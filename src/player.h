@@ -17,6 +17,7 @@ typedef struct {
     int facing;
     bool is_on_ground;
     Rectangle rec;
+    Camera2D camera;
     PlayerAnimState animation_state;
     SpriteID animation_sprites[PLAYER_ANIM_COUNT];
 } Player;
@@ -24,5 +25,6 @@ typedef struct {
 Player NewPlayer(Vector2 pos);
 void DestroyPlayer(Player *player);
 void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode);
+void UpdatePlayerCamera(Player *player);
 void DrawPlayer(Player *player);
 void DrawPlayerCoords(Player *player);

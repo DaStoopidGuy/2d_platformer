@@ -1,8 +1,11 @@
+#include <math.h>
 #include <stdlib.h>
 #include "game.h"
 #include "common.h"
 #include "input.h"
+#include "player.h"
 #include "raylib.h"
+#include "raymath.h"
 #include "tile.h"
 
 Game game;
@@ -12,6 +15,7 @@ bool GameLoop() {
     //TODO: remove Adele - Skyfall as the bgm when shipping the game
     Music bgm = LoadMusicStream(ASSETS_PATH "bgm.mp3");
     PlayMusicStream(bgm);
+
 
     bool showDebug = false;
     bool shouldQuit = false;
@@ -50,38 +54,37 @@ bool GameLoop() {
 
         // UPDATE STUFF
         UpdatePlayer(&game.player, deltaTime, game.tilemap, game.god_mode);
+        UpdatePlayerCamera(&game.player);
 
         // RENDER STUFF
         BeginTextureMode(game.target);
+            ClearBackground((Color){48, 122, 169}); // clear the screen
+            DrawTilemap(game.tilemap);
+            DrawPlayer(&game.player);
 
-        ClearBackground((Color){48, 122, 169}); // clear the screen
-
-        if (game.god_mode)
-            DrawText("GODMODE", 73, 1, 1, RED);
-
-        DrawTilemap(game.tilemap);
-        if (showDebug)
-            DebugHighlightNeighbouringTiles(game.player.pos, game.tilemap);
-
-        // player
-        DrawPlayer(&game.player);
-
+            if (showDebug)
+                DebugHighlightNeighbouringTiles(game.player.pos, game.tilemap);
         EndTextureMode();
 
         BeginDrawing();
-        ClearBackground(BLUE);
-        DrawTexturePro(game.target.texture,
-                       (Rectangle){0, 0, game.target.texture.width,
-                                   -game.target.texture.height},
-                       (Rectangle){0, 0, win_width, win_height},
-                       (Vector2){0, 0}, 0.0f, WHITE);
+            ClearBackground(BLUE);
+            BeginMode2D(game.player.camera);
+            DrawTexturePro(game.target.texture,
+                           (Rectangle){0, 0, game.target.texture.width,
+                                       -game.target.texture.height},
+                           (Rectangle){0, 0, win_width, win_height},
+                           (Vector2){0, 0}, 0.0f, WHITE);
+            EndMode2D();
 
-        // debug
-        if (showDebug) {
-            DrawFPS(win_width - 100, 30);
-            DrawPlayerCoords(&game.player);
-            DrawText("Congrats! You suck!", 190, 200, 20, WHITE);
-        }
+            if (game.god_mode)
+                DrawText("GODMODE", 73*SCALE, 1, 30, RED);
+
+            // debug
+            if (showDebug) {
+                DrawFPS(win_width - 100, 30);
+                DrawPlayerCoords(&game.player);
+                DrawText("Congrats! You suck!", 190, 200, 20, WHITE);
+            }
 
         EndDrawing();
     }

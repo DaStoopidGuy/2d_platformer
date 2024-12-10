@@ -49,6 +49,7 @@ void MainMenu() {
 
         DrawText(label_text, label_rec.x, label_rec.y, label_font_size, LIME);
 
+        // Play game button
         GuiSetStyle(DEFAULT, TEXT_SIZE, button_text_size);
         if (GuiButton(play_button_rec, "Play"))
             shouldQuit = GameLoop();

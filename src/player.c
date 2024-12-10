@@ -15,6 +15,12 @@ Player NewPlayer(Vector2 pos) {
     player.is_on_ground = false;
     player.rec = (Rectangle){0, 0, 8, 8};
 
+    player.camera = (Camera2D) {0};
+    player.camera.target = Vector2Scale(game.player.pos, SCALE);
+    player.camera.offset = (Vector2) {win_width/2, win_height/2};
+    player.camera.zoom = 1.0f;
+
+
     // TODO: set proper sprites
     player.animation_sprites[PLAYER_ANIM_IDLE] = SPRITE_GHOST_IDLE;
     player.animation_sprites[PLAYER_ANIM_RUN] = SPRITE_GHOST_RUN;
@@ -110,6 +116,19 @@ void CollidePlayerWithTilemapY(Player *player, int *tilemap) {
     }
 }
 
+void UpdatePlayerCamera(Player *player) {
+    float player_x = player->pos.x * SCALE;
+    float player_y = player->pos.y * SCALE;
+    float delta_x = fabsf(player_x - player->camera.target.x);
+    float delta_y = fabsf(player_y - player->camera.target.y);
+    // NOTE: 1/1000 gives a really nice camera feel
+    // - also how does Lerp even work, i mean i know how it works but how does an interval of
+    //   one, one thousandth of the x or y delta each frame result in something so nice lol
+    player->camera.target.x = Lerp(player->camera.target.x, player_x, delta_x*1/1000);
+    player->camera.target.y = Lerp(player->camera.target.y, player_y, delta_y*1/1000);
+
+}
+
 void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
     player->animation_state = PLAYER_ANIM_IDLE;
 
@@ -118,6 +137,8 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
         player->pos.x = (TILE_SIZE * MAP_WIDTH) / 2.0 - player->rec.width / 2.0;
         player->pos.y =
             (TILE_SIZE * MAP_HEIGHT) / 2.0 - player->rec.height / 2.0;
+
+        player->camera.target = Vector2Scale(player->pos, SCALE);
     }
 
     // Jumping on jump key
