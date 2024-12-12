@@ -19,7 +19,7 @@ void GetInputs() {
     inputs.game_exit_to_menu = IsKeyPressed(KEY_ESCAPE);
     inputs.toggle_godmode = IsKeyPressed(KEY_G);
     inputs.player_up = IsKeyDown(KEY_UP) || IsKeyDown(KEY_W);
-    inputs.player_down = IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_D);
+    inputs.player_down = IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S);
     inputs.player_right = IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D);
     inputs.player_left = IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A);
     inputs.player_jump =
