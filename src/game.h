@@ -12,7 +12,11 @@ typedef struct {
 
 extern Game game;
 
+extern bool gameEnd;
+extern bool gamePaused;
+
 void InitGameData(Game *g);
 void FreeGameData(Game *g);
+void ResetGame(Game *g);
 
 bool GameLoop();

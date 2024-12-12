@@ -7,6 +7,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+int GetTileDamage(TileType tile) {
+    switch (tile) {
+    case TILE_SPIKE:
+        return 10;
+    default:
+        return 0;
+    }
+}
+
 void DrawTilemap(int *tilemap) {
     // tilemap
     for (int y = 0; y < MAP_HEIGHT; y++) {
@@ -24,6 +33,10 @@ void DrawTilemap(int *tilemap) {
             }
             case TILE_GROUND: {
                 sprite_id = SPRITE_TILE_GROUND;
+                break;
+            }
+            case TILE_SPIKE: {
+                sprite_id = SPRITE_TILE_SPIKE;
                 break;
             }
             default:

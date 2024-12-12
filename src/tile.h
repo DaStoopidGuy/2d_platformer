@@ -5,8 +5,11 @@ typedef enum
 {
     TILE_EMPTY = -1,
     TILE_GRASS = 0,
-    TILE_GROUND = 1
+    TILE_GROUND = 1,
+    TILE_SPIKE = 2,
 } TileType;
+
+int GetTileDamage(TileType tile);
 
 void DrawTilemap(int *tilemap);
 

@@ -54,6 +54,11 @@ Sprite GetSprite(SpriteID sprite_id) {
             sprite.fps = 8;
             break;
         }
+        case SPRITE_TILE_SPIKE:
+        {
+            sprite.atlas_offset = (Vector2){24, 0};
+            break;
+        }
         case SPRITE_COUNT:
         {
             break;

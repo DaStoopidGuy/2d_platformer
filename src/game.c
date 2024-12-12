@@ -10,6 +10,9 @@
 
 Game game;
 
+bool gameEnd = false;
+bool gamePaused = false;
+
 // returns a boolean telling to exit the game or not
 bool GameLoop() {
     //TODO: remove Adele - Skyfall as the bgm when shipping the game
@@ -19,6 +22,7 @@ bool GameLoop() {
 
     bool showDebug = false;
     bool shouldQuit = false;
+
     while (true) {
         GetInputs();
 
@@ -42,8 +46,11 @@ bool GameLoop() {
         }
 
         // go back to main menu on pressing esc
-        if (inputs.game_exit_to_menu)
+        if (inputs.game_exit_to_menu) {
+            shouldQuit = false;
+            gamePaused = true;
             break;
+        }
 
         // toggle god mode on G
         if (inputs.toggle_godmode)
@@ -86,6 +93,10 @@ bool GameLoop() {
                 DrawText("Congrats! You suck!", 190, 200, 20, WHITE);
             }
 
+            if (gameEnd) {
+                break;
+            }
+
         EndDrawing();
     }
     StopMusicStream(bgm);
@@ -93,10 +104,22 @@ bool GameLoop() {
 }
 
 void InitGameData(Game *g) {
+    gameEnd = false;
+    gamePaused = false;
     g->target = LoadRenderTexture(200, 152);
     g->atlas = LoadTexture(ASSETS_PATH "atlas.png");
     g->god_mode = false;
     g->player = NewPlayer((Vector2){0, 0});
+    g->tilemap = malloc(sizeof(int) * MAP_WIDTH * MAP_HEIGHT);
+    ImportTilemap(ASSETS_PATH "map.csv", g->tilemap);
+}
+
+void ResetGame(Game *g) {
+    gameEnd = false;
+    gamePaused = false;
+    DestroyPlayer(&g->player);
+    g->player = NewPlayer((Vector2){0, 0});
+    free(g->tilemap);
     g->tilemap = malloc(sizeof(int) * MAP_WIDTH * MAP_HEIGHT);
     ImportTilemap(ASSETS_PATH "map.csv", g->tilemap);
 }

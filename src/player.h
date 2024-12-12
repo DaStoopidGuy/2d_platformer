@@ -15,6 +15,7 @@ typedef struct {
     Vector2 pos;
     Vector2 vel;
     int facing;
+    int health;
     bool is_on_ground;
     Rectangle rec;
     Camera2D camera;
@@ -28,3 +29,4 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode);
 void UpdatePlayerCamera(Player *player);
 void DrawPlayer(Player *player);
 void DrawPlayerCoords(Player *player);
+void PlayerDie();

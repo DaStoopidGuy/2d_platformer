@@ -15,6 +15,8 @@ Player NewPlayer(Vector2 pos) {
     player.is_on_ground = false;
     player.rec = (Rectangle){0, 0, 8, 8};
 
+    player.health = 100;
+
     player.camera = (Camera2D) {0};
     player.camera.target = Vector2Scale(game.player.pos, SCALE);
     player.camera.offset = (Vector2) {win_width/2, win_height/2};
@@ -202,6 +204,15 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
             TileType tile = tilemap[player_tile_y * MAP_WIDTH + player_tile_x];
             if (tile == TILE_EMPTY)
                 player->is_on_ground = false;
+            if (tile == TILE_SPIKE) {
+                player->health -= 10;
+                if (player->health <= 0) {
+                    player->health = 0;
+                    PlayerDie();
+                }
+                
+
+            }
         }
 
         // Horizontal movement and Collison detection
@@ -227,4 +238,10 @@ void DrawPlayer(Player *player) {
 void DrawPlayerCoords(Player *player) {
     DrawText(TextFormat("%.0f %.0f", player->pos.x, player->pos.y), 20, 20, 20,
              WHITE);
+}
+
+void PlayerDie() {
+    // Maybe add a death animation
+    gameEnd = true;
+    gamePaused = false;
 }
