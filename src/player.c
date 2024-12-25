@@ -69,7 +69,7 @@ void CollidePlayerWithTileRecY(Player *player, Rectangle tile_rec) {
     }
 }
 
-void CollidePlayerWithTilemapX(Player *player, int *tilemap) {
+void CollidePlayerWithTilemapX(Player *player, int *tilemap, Vector2 mapsize) {
     int tiles_around[9][2];
     GetTilesAround(tiles_around, player->pos);
 
@@ -88,12 +88,12 @@ void CollidePlayerWithTilemapX(Player *player, int *tilemap) {
             TILE_SIZE,
             TILE_SIZE,
         };
-        if (tilemap[y * MAP_WIDTH + x] != TILE_EMPTY)
+        if (tilemap[y * (int)mapsize.x + x] != TILE_EMPTY)
             CollidePlayerWithTileRecX(player, tile_rect);
     }
 }
 
-void CollidePlayerWithTilemapY(Player *player, int *tilemap) {
+void CollidePlayerWithTilemapY(Player *player, int *tilemap, Vector2 mapsize) {
     int tiles_around[9][2];
     GetTilesAround(tiles_around, player->pos);
 
@@ -111,7 +111,7 @@ void CollidePlayerWithTilemapY(Player *player, int *tilemap) {
             TILE_SIZE,
             TILE_SIZE,
         };
-        if (tilemap[y * MAP_WIDTH + x] != TILE_EMPTY)
+        if (tilemap[y * (int)mapsize.x + x] != TILE_EMPTY)
             CollidePlayerWithTileRecY(player, tile_rect);
     }
 }
@@ -129,14 +129,14 @@ void UpdatePlayerCamera(Player *player) {
 
 }
 
-void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
+void UpdatePlayer(Player *player, float deltaTime, int *tilemap, Vector2 mapsize, bool godmode) {
     player->animation_state = PLAYER_ANIM_IDLE;
 
     // HACK: teleport back to center of screen
     if (inputs.player_teleport_back) {
-        player->pos.x = (TILE_SIZE * MAP_WIDTH) / 2.0 - player->rec.width / 2.0;
+        player->pos.x = (TILE_SIZE * mapsize.x) / 2.0 - player->rec.width / 2.0;
         player->pos.y =
-            (TILE_SIZE * MAP_HEIGHT) / 2.0 - player->rec.height / 2.0;
+            (TILE_SIZE * mapsize.x) / 2.0 - player->rec.height / 2.0;
 
         player->camera.target = Vector2Scale(player->pos, SCALE);
     }
@@ -199,7 +199,7 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
             int player_tile_x = (player->pos.x / TILE_SIZE) + 0.5f;
             // check the tile under player and see if it is empty
             player_tile_y += 1;
-            TileType tile = tilemap[player_tile_y * MAP_WIDTH + player_tile_x];
+            TileType tile = tilemap[player_tile_y * (int)mapsize.x + player_tile_x];
             if (tile == TILE_EMPTY)
                 player->is_on_ground = false;
         }
@@ -207,12 +207,12 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode) {
         // Horizontal movement and Collison detection
         player->pos.x += player->vel.x;
         player->rec.x = player->pos.x;
-        CollidePlayerWithTilemapX(player, tilemap);
+        CollidePlayerWithTilemapX(player, tilemap, mapsize);
 
         // Vertical movement and Collision detection
         player->pos.y += player->vel.y;
         player->rec.y = player->pos.y;
-        CollidePlayerWithTilemapY(player, tilemap);
+        CollidePlayerWithTilemapY(player, tilemap, mapsize);
     }
 }
 void DrawPlayer(Player *player) {

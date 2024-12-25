@@ -5,6 +5,7 @@
 typedef struct {
     bool toggle_debug;
     bool game_exit_to_menu;
+    bool game_pause;
     bool toggle_godmode;
     bool player_up;
     bool player_down;

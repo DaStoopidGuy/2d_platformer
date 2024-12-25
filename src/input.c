@@ -17,6 +17,7 @@ Inputs inputs;
 void GetInputs() {
     inputs.toggle_debug = IsKeyPressed(KEY_BACKSLASH);
     inputs.game_exit_to_menu = IsKeyPressed(KEY_ESCAPE);
+    inputs.game_pause = IsKeyPressed(KEY_P);
     inputs.toggle_godmode = IsKeyPressed(KEY_G);
     inputs.player_up = IsKeyDown(KEY_UP) || IsKeyDown(KEY_W);
     inputs.player_down = IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_D);

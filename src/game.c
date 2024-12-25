@@ -1,11 +1,9 @@
-#include <math.h>
 #include <stdlib.h>
 #include "game.h"
 #include "common.h"
 #include "input.h"
 #include "player.h"
 #include "raylib.h"
-#include "raymath.h"
 #include "tile.h"
 
 Game game;
@@ -45,6 +43,9 @@ bool GameLoop() {
         if (inputs.game_exit_to_menu)
             break;
 
+        if (inputs.game_pause)
+            game.paused = !game.paused;
+
         // toggle god mode on G
         if (inputs.toggle_godmode)
             game.god_mode = !game.god_mode;
@@ -53,17 +54,19 @@ bool GameLoop() {
             showDebug = !showDebug;
 
         // UPDATE STUFF
-        UpdatePlayer(&game.player, deltaTime, game.tilemap, game.god_mode);
-        UpdatePlayerCamera(&game.player);
+        if (!game.paused) {
+            UpdatePlayer(&game.player, deltaTime, game.tilemap, game.mapsize, game.god_mode);
+            UpdatePlayerCamera(&game.player);
+        }
 
         // RENDER STUFF
         BeginTextureMode(game.target);
             ClearBackground((Color){48, 122, 169}); // clear the screen
-            DrawTilemap(game.tilemap);
+            DrawTilemap(game.tilemap, game.mapsize);
             DrawPlayer(&game.player);
 
             if (showDebug)
-                DebugHighlightNeighbouringTiles(game.player.pos, game.tilemap);
+                DebugHighlightNeighbouringTiles(game.player.pos, game.tilemap, game.mapsize);
         EndTextureMode();
 
         BeginDrawing();
@@ -97,8 +100,9 @@ void InitGameData(Game *g) {
     g->atlas = LoadTexture(ASSETS_PATH "atlas.png");
     g->god_mode = false;
     g->player = NewPlayer((Vector2){0, 0});
-    g->tilemap = malloc(sizeof(int) * MAP_WIDTH * MAP_HEIGHT);
-    ImportTilemap(ASSETS_PATH "map.csv", g->tilemap);
+    g->mapsize = GetTilemapDimensions(ASSETS_PATH "map.csv");
+    g->tilemap = malloc(sizeof(int) * g->mapsize.x * g->mapsize.y);
+    ImportTilemap(ASSETS_PATH "map.csv", g->tilemap, g->mapsize);
 }
 
 void FreeGameData(Game *g) {

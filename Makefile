@@ -10,12 +10,16 @@ OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
 INC_FLAGS := -Iinclude
-CFLAGS := $(INC_FLAGS) -MMD -MP -DASSETS_PATH=$(ASSETS_PATH)
+CFLAGS := $(INC_FLAGS) -MMD -MP -DASSETS_PATH=$(ASSETS_PATH) -ggdb
 LDFLAGS := -Llib -lraylib -lm
 
 .PHONY: run
 run: $(TARGET_EXEC)
 	./$(TARGET_EXEC)
+
+gf2: $(TARGET_EXEC)
+	gf2 $(TARGET_EXEC)
+
 
 # The final build step.
 $(TARGET_EXEC): $(OBJS)

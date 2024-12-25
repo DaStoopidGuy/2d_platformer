@@ -7,12 +7,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-void DrawTilemap(int *tilemap) {
+void DrawTilemap(int *tilemap, Vector2 mapsize) {
     // tilemap
-    for (int y = 0; y < MAP_HEIGHT; y++) {
-        for (int x = 0; x < MAP_WIDTH; x++) {
+    for (int y = 0; y < mapsize.y; y++) {
+        for (int x = 0; x < (int)mapsize.x; x++) {
             SpriteID sprite_id = SPRITE_NONE;
-            switch (tilemap[y * MAP_WIDTH + x]) {
+            switch (tilemap[y * (int)mapsize.x + x]) {
             case TILE_EMPTY: // air
             {
                 sprite_id = SPRITE_NONE;
@@ -56,20 +56,49 @@ void DebugHighlighTile(int tile_x, int tile_y) {
                        TILE_SIZE, RED);
 }
 
-void DebugHighlightNeighbouringTiles(Vector2 pos, int *tilemap) {
+void DebugHighlightNeighbouringTiles(Vector2 pos, int *tilemap, Vector2 mapsize) {
     int tiles_around[9][2];
     GetTilesAround(tiles_around, pos);
 
     for (int i = 0; i < 9; i++) {
         int x = tiles_around[i][0];
         int y = tiles_around[i][1];
-        if (tilemap[y * MAP_WIDTH + x] != TILE_EMPTY)
+        if (tilemap[y * (int)mapsize.x + x] != TILE_EMPTY)
             DebugHighlighTile(x, y);
     }
 }
 
+Vector2 GetTilemapDimensions(const char *filename) {
+    char buffer[1024];
+    char *token;
+
+    FILE *file = fopen(filename, "r");
+    if (file == NULL)
+        printf("Map file could not be opened");
+
+    // read file content line by line
+    int y = 0;
+    int x = 0;
+    while (fgets(buffer, sizeof(buffer), file)) {
+        // replace the trailing newline character with 0 (aka remove it)
+        // buffer[strcspn(buffer, "\n")] = 0;
+        token = strtok(buffer, ",");
+
+        x = 0;
+        while (token != NULL) {
+            token = strtok(NULL, ",");
+            x++;
+        }
+        y++;
+    }
+    // close the file after use
+    fclose(file); 
+
+    return (Vector2){ x, y };
+}
+
 // TODO: check for tilemap max rows and columns in the loops
-void ImportTilemap(const char *filename, int *tilemap) {
+void ImportTilemap(const char *filename, int *tilemap, Vector2 mapsize) {
     char buffer[1024];
     char *token;
 
@@ -88,7 +117,7 @@ void ImportTilemap(const char *filename, int *tilemap) {
         while (token != NULL) {
 
             // set the tilemap cell accordingly
-            tilemap[y * MAP_WIDTH + x] = atoi(token);
+            tilemap[y * (int)mapsize.x + x] = atoi(token);
             token = strtok(NULL, ",");
             x++;
         }

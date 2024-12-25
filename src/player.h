@@ -24,7 +24,7 @@ typedef struct {
 
 Player NewPlayer(Vector2 pos);
 void DestroyPlayer(Player *player);
-void UpdatePlayer(Player *player, float deltaTime, int *tilemap, bool godmode);
+void UpdatePlayer(Player *player, float deltaTime, int *tilemap, Vector2 mapsize, bool godmode);
 void UpdatePlayerCamera(Player *player);
 void DrawPlayer(Player *player);
 void DrawPlayerCoords(Player *player);

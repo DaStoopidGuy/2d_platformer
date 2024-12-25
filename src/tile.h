@@ -8,11 +8,12 @@ typedef enum
     TILE_GROUND = 1
 } TileType;
 
-void DrawTilemap(int *tilemap);
+void DrawTilemap(int *tilemap, Vector2 mapsize);
 
 void GetTilesAround(int tiles_around[9][2], Vector2 pos);
 
 void HighlightTile(int tile_x, int tile_y);
-void DebugHighlightNeighbouringTiles(Vector2 pos, int *tilemap);
+void DebugHighlightNeighbouringTiles(Vector2 pos, int *tilemap, Vector2 mapsize);
 
-void ImportTilemap(const char *filename, int *tilemap);
+Vector2 GetTilemapDimensions(const char *filename);
+void ImportTilemap(const char *filename, int *tilemap, Vector2 mapsize);
