@@ -23,8 +23,6 @@ bool GameLoop() {
         if (game.god_mode)
             UpdateMusicStream(bgm);
 
-        // TODO: draw to a small render target first then scale it up to window
-        // size
         float deltaTime = GetFrameTime();
 
         // on window resize
@@ -60,27 +58,19 @@ bool GameLoop() {
         }
 
         // RENDER STUFF
-        BeginTextureMode(game.target);
-            ClearBackground((Color){48, 122, 169}); // clear the screen
-            DrawTilemap(game.tilemap, game.mapsize);
-            DrawPlayer(&game.player);
-
-            if (showDebug)
-                DebugHighlightNeighbouringTiles(game.player.pos, game.tilemap, game.mapsize);
-        EndTextureMode();
 
         BeginDrawing();
-            ClearBackground(BLUE);
+            ClearBackground((Color){48, 122, 169}); // clear the screen
             BeginMode2D(game.player.camera);
-            DrawTexturePro(game.target.texture,
-                           (Rectangle){0, 0, game.target.texture.width,
-                                       -game.target.texture.height},
-                           (Rectangle){0, 0, win_width, win_height},
-                           (Vector2){0, 0}, 0.0f, WHITE);
+                DrawTilemap(game.tilemap, game.mapsize);
+                DrawPlayer(&game.player);
+
+                if (showDebug)
+                    DebugHighlightNeighbouringTiles(game.player.pos, game.tilemap, game.mapsize);
             EndMode2D();
 
             if (game.god_mode)
-                DrawText("GODMODE", 73*SCALE, 1, 30, RED);
+                DrawText("GODMODE", (win_width/2)-60, 1, 30, RED);
 
             // debug
             if (showDebug) {

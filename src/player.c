@@ -16,9 +16,9 @@ Player NewPlayer(Vector2 pos) {
     player.rec = (Rectangle){0, 0, 8, 8};
 
     player.camera = (Camera2D) {0};
-    player.camera.target = Vector2Scale(game.player.pos, SCALE);
+    player.camera.target = game.player.pos;
     player.camera.offset = (Vector2) {win_width/2, win_height/2};
-    player.camera.zoom = 1.0f;
+    player.camera.zoom = SCALE;
 
 
     // TODO: set proper sprites
@@ -117,8 +117,8 @@ void CollidePlayerWithTilemapY(Player *player, int *tilemap, Vector2 mapsize) {
 }
 
 void UpdatePlayerCamera(Player *player) {
-    float player_x = player->pos.x * SCALE;
-    float player_y = player->pos.y * SCALE;
+    float player_x = player->pos.x;
+    float player_y = player->pos.y;
     float delta_x = fabsf(player_x - player->camera.target.x);
     float delta_y = fabsf(player_y - player->camera.target.y);
     // NOTE: 1/1000 gives a really nice camera feel
@@ -138,7 +138,7 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, Vector2 mapsize
         player->pos.y =
             (TILE_SIZE * mapsize.x) / 2.0 - player->rec.height / 2.0;
 
-        player->camera.target = Vector2Scale(player->pos, SCALE);
+        player->camera.target = player->pos;
     }
 
     // Jumping on jump key
