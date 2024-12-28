@@ -10,6 +10,7 @@ typedef struct {
     Texture2D atlas;
     Vector2 mapsize;
     int *tilemap;
+    Music bgm;
 } Game;
 
 extern Game game;

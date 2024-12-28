@@ -1,18 +1,17 @@
-#include <stdlib.h>
 #include "game.h"
 #include "common.h"
 #include "input.h"
 #include "player.h"
 #include "raylib.h"
 #include "tile.h"
+#include <stdlib.h>
 
 Game game;
 
 // returns a boolean telling to exit the game or not
 bool GameLoop() {
     // TODO: remove Adele - Skyfall as the bgm when shipping the game
-    Music bgm = LoadMusicStream(ASSETS_PATH "bgm.mp3");
-    PlayMusicStream(bgm);
+    PlayMusicStream(game.bgm);
 
 
     bool showDebug = false;
@@ -21,7 +20,7 @@ bool GameLoop() {
         GetInputs();
 
         if (game.god_mode)
-            UpdateMusicStream(bgm);
+            UpdateMusicStream(game.bgm);
 
         float deltaTime = GetFrameTime();
 
@@ -81,7 +80,7 @@ bool GameLoop() {
 
         EndDrawing();
     }
-    StopMusicStream(bgm);
+    StopMusicStream(game.bgm);
     return shouldQuit;
 }
 
@@ -92,10 +91,12 @@ void InitGameData(Game *g) {
     g->mapsize = GetTilemapDimensions(ASSETS_PATH "map.csv");
     g->tilemap = malloc(sizeof(int) * g->mapsize.x * g->mapsize.y);
     ImportTilemap(ASSETS_PATH "map.csv", g->tilemap, g->mapsize);
+    g->bgm = LoadMusicStream(ASSETS_PATH "bgm.mp3");
 }
 
 void FreeGameData(Game *g) {
     UnloadTexture(g->atlas);
     DestroyPlayer(&g->player);
     free(g->tilemap);
+    UnloadMusicStream(g->bgm);
 }
