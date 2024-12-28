@@ -10,7 +10,7 @@ Game game;
 
 // returns a boolean telling to exit the game or not
 bool GameLoop() {
-    //TODO: remove Adele - Skyfall as the bgm when shipping the game
+    // TODO: remove Adele - Skyfall as the bgm when shipping the game
     Music bgm = LoadMusicStream(ASSETS_PATH "bgm.mp3");
     PlayMusicStream(bgm);
 
@@ -86,7 +86,6 @@ bool GameLoop() {
 }
 
 void InitGameData(Game *g) {
-    g->target = LoadRenderTexture(200, 152);
     g->atlas = LoadTexture(ASSETS_PATH "atlas.png");
     g->god_mode = false;
     g->player = NewPlayer((Vector2){0, 0});
@@ -96,7 +95,6 @@ void InitGameData(Game *g) {
 }
 
 void FreeGameData(Game *g) {
-    UnloadRenderTexture(g->target);
     UnloadTexture(g->atlas);
     DestroyPlayer(&g->player);
     free(g->tilemap);

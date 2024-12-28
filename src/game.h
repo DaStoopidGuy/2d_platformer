@@ -5,7 +5,6 @@
 
 typedef struct {
     bool paused;
-    RenderTexture2D target;
     Player player;
     bool god_mode;
     Texture2D atlas;
