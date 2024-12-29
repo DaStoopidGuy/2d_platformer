@@ -61,8 +61,8 @@ bool GameLoop() {
         BeginDrawing();
             ClearBackground((Color){48, 122, 169}); // clear the screen
             BeginMode2D(game.player.camera);
-                DrawTilemap(game.tilemap, game.mapsize);
-                DrawPlayer(&game.player);
+                DrawTilemap(game.tilemap, game.mapsize, game.atlas);
+                DrawPlayer(&game.player, game.atlas);
 
                 if (showDebug)
                     DebugHighlightNeighbouringTiles(game.player.pos, game.tilemap, game.mapsize);

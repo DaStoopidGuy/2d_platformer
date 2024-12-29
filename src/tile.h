@@ -8,7 +8,7 @@ typedef enum
     TILE_GROUND = 1
 } TileType;
 
-void DrawTilemap(int *tilemap, Vector2 mapsize);
+void DrawTilemap(int *tilemap, Vector2 mapsize, Texture2D atlas);
 
 void GetTilesAround(int tiles_around[9][2], Vector2 pos);
 

@@ -1,6 +1,5 @@
 #include "player.h"
 #include "common.h"
-#include "game.h"
 #include "input.h"
 #include "sprite.h"
 #include "tile.h"
@@ -16,7 +15,7 @@ Player NewPlayer(Vector2 pos) {
     player.rec = (Rectangle){0, 0, 8, 8};
 
     player.camera = (Camera2D) {0};
-    player.camera.target = game.player.pos;
+    player.camera.target = pos;
     player.camera.offset = (Vector2) {win_width/2, win_height/2};
     player.camera.zoom = SCALE;
 
@@ -215,14 +214,14 @@ void UpdatePlayer(Player *player, float deltaTime, int *tilemap, Vector2 mapsize
         CollidePlayerWithTilemapY(player, tilemap, mapsize);
     }
 }
-void DrawPlayer(Player *player) {
+void DrawPlayer(Player *player, Texture2D atlas) {
     Vector2 position = player->pos;
     // NOTE: casting to int to solve the animation rendering glitch
     position.x = (int)position.x;
     position.y = (int)position.y;
 
     DrawAnimatedSprite(player->animation_sprites[player->animation_state],
-                       game.atlas, position, player->facing < 0);
+                       atlas, position, player->facing < 0);
 }
 void DrawPlayerCoords(Player *player) {
     DrawText(TextFormat("%.0f %.0f", player->pos.x, player->pos.y), 20, 20, 20,

@@ -1,13 +1,12 @@
 #include "tile.h"
 #include "common.h"
-#include "game.h"
 #include "raylib.h"
 #include "sprite.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-void DrawTilemap(int *tilemap, Vector2 mapsize) {
+void DrawTilemap(int *tilemap, Vector2 mapsize, Texture2D atlas) {
     // tilemap
     for (int y = 0; y < mapsize.y; y++) {
         for (int x = 0; x < (int)mapsize.x; x++) {
@@ -30,7 +29,7 @@ void DrawTilemap(int *tilemap, Vector2 mapsize) {
                 break;
             }
             if (sprite_id != SPRITE_NONE)
-                DrawStaticSprite(sprite_id, game.atlas,
+                DrawStaticSprite(sprite_id, atlas,
                            (Vector2){.x = x * TILE_SIZE, y * TILE_SIZE}, false);
         }
     }
